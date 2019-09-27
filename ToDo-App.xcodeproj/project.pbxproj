@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		51234D12233E6A3D00C823DA /* ListModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51234D11233E6A3C00C823DA /* ListModeViewController.swift */; };
-		51234D14233E6A7300C823DA /* TaskDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51234D13233E6A7200C823DA /* TaskDetailsViewController.swift */; };
-		51234D17233E6AA300C823DA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51234D16233E6AA300C823DA /* Extensions.swift */; };
+		51234D19233E73EA00C823DA /* TaskDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51234D18233E73EA00C823DA /* TaskDetailsViewController.swift */; };
+		51234D1B233E741B00C823DA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51234D1A233E741B00C823DA /* Extensions.swift */; };
 		514D02BB233A0BCA00E675F8 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */; };
 		514D02BD233A1C5700E675F8 /* NewTaskController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */; };
 		516295FB232E71CF0072F575 /* DoneTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516295FA232E71CF0072F575 /* DoneTasksViewController.swift */; };
@@ -50,9 +50,9 @@
 /* Begin PBXFileReference section */
 		28AAC5BC2352376FCB5687A8 /* Pods-ToDo-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo-App.debug.xcconfig"; path = "Target Support Files/Pods-ToDo-App/Pods-ToDo-App.debug.xcconfig"; sourceTree = "<group>"; };
 		51234D11233E6A3C00C823DA /* ListModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListModeViewController.swift; sourceTree = "<group>"; };
-		51234D13233E6A7200C823DA /* TaskDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskDetailsViewController.swift; path = "../../../../../../Desktop/ToDo-App/ToDo-App/Controllers/TaskDetailsViewController.swift"; sourceTree = "<group>"; };
 		51234D15233E6A8A00C823DA /* Baloo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Baloo-Regular.ttf"; path = "Controllers/not done/Baloo-Regular.ttf"; sourceTree = "<group>"; };
-		51234D16233E6AA300C823DA /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = "../../../../../../Desktop/ToDo-App/ToDo-App/Model/Extensions.swift"; sourceTree = "<group>"; };
+		51234D18233E73EA00C823DA /* TaskDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskDetailsViewController.swift; path = "../../../../../Desktop/ToDo-App_v2/ToDo-App/Controllers/TaskDetailsViewController.swift"; sourceTree = "<group>"; };
+		51234D1A233E741B00C823DA /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = "../../../../../Desktop/ToDo-App_v2/ToDo-App/Model/Extensions.swift"; sourceTree = "<group>"; };
 		514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTaskController+handlers.swift"; sourceTree = "<group>"; };
 		516295FA232E71CF0072F575 /* DoneTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneTasksViewController.swift; sourceTree = "<group>"; };
@@ -151,7 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				51FC35FB233812CF0094C4FA /* Item.swift */,
-				51234D16233E6AA300C823DA /* Extensions.swift */,
+				51234D1A233E741B00C823DA /* Extensions.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -162,7 +162,7 @@
 				51234D11233E6A3C00C823DA /* ListModeViewController.swift */,
 				5173B95D23224983005AD2F9 /* NewTaskViewControler.swift */,
 				514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */,
-				51234D13233E6A7200C823DA /* TaskDetailsViewController.swift */,
+				51234D18233E73EA00C823DA /* TaskDetailsViewController.swift */,
 				519C6280232FCADD00D243E2 /* SignUpViewController.swift */,
 				519C627F232FCADD00D243E2 /* LoginViewController.swift */,
 				514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */,
@@ -434,11 +434,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51234D19233E73EA00C823DA /* TaskDetailsViewController.swift in Sources */,
 				5173B95E23224983005AD2F9 /* NewTaskViewControler.swift in Sources */,
 				51FC35F8233800BB0094C4FA /* NoteCell.swift in Sources */,
 				51FC35FC233812CF0094C4FA /* Item.swift in Sources */,
 				5173B95C232231FA005AD2F9 /* Slider.swift in Sources */,
-				51234D14233E6A7300C823DA /* TaskDetailsViewController.swift in Sources */,
 				519C6281232FCADD00D243E2 /* LoginViewController.swift in Sources */,
 				516295FF232E74A20072F575 /* CalendarModeViewController.swift in Sources */,
 				51234D12233E6A3D00C823DA /* ListModeViewController.swift in Sources */,
@@ -447,7 +447,7 @@
 				516295FB232E71CF0072F575 /* DoneTasksViewController.swift in Sources */,
 				51893CEE2320D116001EADC0 /* AppDelegate.swift in Sources */,
 				514D02BD233A1C5700E675F8 /* NewTaskController+handlers.swift in Sources */,
-				51234D17233E6AA300C823DA /* Extensions.swift in Sources */,
+				51234D1B233E741B00C823DA /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
