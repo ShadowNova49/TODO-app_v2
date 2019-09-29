@@ -36,11 +36,11 @@ class Item {
         self.attachPhotoUrl = data["attachPhotoUrl"] as? String
         //self.isDone = data["isDone"] as! Bool
     }
- 
+    
     func toAnyObject() -> Any {
         return [
             "name": name,
-            "noteDesciption": noteDescription,
+            "noteDescription": noteDescription,
             "dateTime": dateTime,
             "attachPhotoUrl" : attachPhotoUrl
             //"isDone" : isDone

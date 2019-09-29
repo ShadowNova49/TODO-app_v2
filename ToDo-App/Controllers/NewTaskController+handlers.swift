@@ -10,8 +10,8 @@ import UIKit
 import Firebase
 
 extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-   
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // Local variable inserted by Swift 4.2 migrator.
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         
@@ -30,7 +30,7 @@ extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationCon
         dismiss(animated: true, completion: nil)
         
     }
- 
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         print("canceled picker")
         dismiss(animated: true, completion: nil)

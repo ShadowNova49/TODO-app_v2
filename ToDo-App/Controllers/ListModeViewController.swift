@@ -17,7 +17,7 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
     var roundButton = UIButton()
     
     var user: User!
-    var items = [Item]()
+    static var items = [Item]()
     var ref: DatabaseReference!
     private var databaseHandle: DatabaseHandle!
     
@@ -28,7 +28,7 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
         self.roundButton.setTitleColor(UIColor.blue, for: .normal)
         self.roundButton.addTarget(self, action: #selector(ButtonClick(_:)), for: UIControl.Event.touchUpInside)
         self.view.addSubview(roundButton)
-
+        
         user = Auth.auth().currentUser
         ref = Database.database().reference()
         startObservingDatabase()
@@ -80,14 +80,14 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
                 newItems.append(item)
             }
             
-            self.items = newItems
+            ListModeViewController.items = newItems
             self.tableView.reloadData()
             
         })
     }
     
     deinit {
-        ref.child("users/\(self.user.uid)/items").removeObserver(withHandle: databaseHandle)
+        ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -95,12 +95,12 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return ListModeViewController.items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as! NoteCell
-        let item = items[indexPath.row]
+        let item = ListModeViewController.items[indexPath.row]
         cell.noteNameLabel.text = item.name
         cell.noteDateTimeLabel.text = item.dateTime
         return cell
@@ -108,7 +108,7 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let item = items[indexPath.row]
+            let item = ListModeViewController.items[indexPath.row]
             item.ref?.removeValue()
         }
     }
@@ -127,19 +127,19 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
             //print(indexPath!)
             //print(items[indexPath!])
             
-            if let name = items[indexPath!].name {
+            if let name = ListModeViewController.items[indexPath!].name {
                 viewController.name = name
             }
             
-            if let dateTime = items[indexPath!].dateTime {
+            if let dateTime = ListModeViewController.items[indexPath!].dateTime {
                 viewController.dateTime = dateTime
             }
             
-            if let description = items[indexPath!].noteDescription {
+            if let description = ListModeViewController.items[indexPath!].noteDescription {
                 viewController.noteDescription = description
             }
             
-            if let attachedImage = items[indexPath!].attachPhotoUrl {
+            if let attachedImage = ListModeViewController.items[indexPath!].attachPhotoUrl {
                 viewController.attachedImageUrl = attachedImage
             }
         }

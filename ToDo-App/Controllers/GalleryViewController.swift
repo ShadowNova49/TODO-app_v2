@@ -7,19 +7,61 @@
 //
 
 import UIKit
+import Firebase
 
 class GalleryViewController: UIViewController {
     
-    //@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var collectionView:  UICollectionView!
+
+    var imagesUrl = [String]()
+    var itemWithImage: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        
+        for item in ListModeViewController.items {
+            if item.attachPhotoUrl != nil {
+                imagesUrl.append(item.attachPhotoUrl!)
+                itemWithImage = itemWithImage + 1
+            }
+        }
+        
+        self.collectionView.reloadData()
+    }
+}
 
-        // Do any additional setup after loading the view.
+// MARK: Data source
+
+extension GalleryViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return itemWithImage
     }
     
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
+        cell.imageView.loadImageUsingCacheWithUrlString(imagesUrl[indexPath.row])
+        return cell
+    }
+}
 
+// MARK: Delegate
+
+extension GalleryViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width / 3 - 50 / 3
+        return CGSize(width: width, height: width)
+    }
     
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "FromGalleryToGallery", sender: indexPath)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "FromGalleryToGallery" {
+            let viewController = segue.destination as! FullScreenImageViewController
+            let indexPath = sender as? IndexPath
+            viewController.imageUrl = imagesUrl[indexPath!.row]
+        }
+    }
 }

@@ -23,20 +23,20 @@ class FullScreenImageViewController: UIViewController {
     }
 
     var image: UIImage?
+    var imageUrl: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.fullScreenNoteImage.image = image
+        if imageUrl == nil {
+            self.fullScreenNoteImage.image = image
+        } else {
+            self.fullScreenNoteImage.loadImageUsingCacheWithUrlString(imageUrl!)
+        }
+        
     }
     
     @objc func hideImage() {
         dismiss(animated: true, completion: nil)
     }
-    
-    /*
-    @IBAction func doneButton(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
-    }
-     */
 }

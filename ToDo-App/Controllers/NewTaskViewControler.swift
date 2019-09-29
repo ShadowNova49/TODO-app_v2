@@ -26,12 +26,13 @@ class NewTaskViewControler: UIViewController {
     var ref: DatabaseReference!
     
     var dateTime: String?
-
+    
     var attachPhotoUrl: UIImage?
+    var stringImageUrl: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         dateTextField.inputView = datePicker
         datePicker.datePickerMode = .date
         timeTextField.inputView = timePicker
@@ -39,9 +40,6 @@ class NewTaskViewControler: UIViewController {
         
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         timePicker.addTarget(self, action: #selector(timeChanged), for: .valueChanged)
-        
-        //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureDone))
-        //self.view.addGestureRecognizer(tapGesture)
         
         user = Auth.auth().currentUser
         ref = Database.database().reference()
@@ -67,11 +65,11 @@ class NewTaskViewControler: UIViewController {
         
         if (!dateTextField.text!.isEmpty){
             dateTime = dateTextField.text! + " " + timeTextField.text!
-        } 
+        }
         
         let storageRef = Storage.storage().reference().child("note_attach_image").child("\(NSUUID().uuidString).png")
         
-        if let uploadData = self.attachPhotoUrl!.pngData() {
+        if let uploadData = self.attachPhotoUrl?.pngData() {
             storageRef.putData(uploadData, metadata: nil, completion: { (_, err) in
                 
                 storageRef.downloadURL(completion: { (url, err) in
@@ -81,13 +79,14 @@ class NewTaskViewControler: UIViewController {
                     }
                     
                     guard let url = url else { return }
-                    let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: url.absoluteString)
-                    let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
-                    noteRef.setValue(noteItem.toAnyObject())
-                    
+                    self.stringImageUrl = url.absoluteString
                 })
             })
         }
+        
+        let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: self.stringImageUrl)
+        let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
+        noteRef.setValue(noteItem.toAnyObject())
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -108,7 +107,7 @@ class NewTaskViewControler: UIViewController {
     @objc func timeChanged(){
         getFormateFromPicker(format: "time")
     }
-
+    
     func getFormateFromPicker(format: String){
         let formatter = DateFormatter()
         

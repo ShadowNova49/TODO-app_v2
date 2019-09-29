@@ -21,6 +21,7 @@
 		519C627E232FC05A00D243E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 519C627D232FC05A00D243E2 /* GoogleService-Info.plist */; };
 		519C6281232FCADD00D243E2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519C627F232FCADD00D243E2 /* LoginViewController.swift */; };
 		519C6282232FCADD00D243E2 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519C6280232FCADD00D243E2 /* SignUpViewController.swift */; };
+		51C2C36423410D3300B1A313 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C2C36323410D3300B1A313 /* ImageCollectionViewCell.swift */; };
 		51FC35F8233800BB0094C4FA /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FC35F7233800BB0094C4FA /* NoteCell.swift */; };
 		51FC35FC233812CF0094C4FA /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FC35FB233812CF0094C4FA /* Item.swift */; };
 		51FCBDC7233FA3E700136A17 /* TaskDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */; };
@@ -69,6 +70,7 @@
 		519C627D232FC05A00D243E2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		519C627F232FCADD00D243E2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		519C6280232FCADD00D243E2 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		51C2C36323410D3300B1A313 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		51FC35F7233800BB0094C4FA /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
 		51FC35FB233812CF0094C4FA /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailsViewController.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 			children = (
 				5173B95B232231FA005AD2F9 /* Slider.swift */,
 				51FC35F7233800BB0094C4FA /* NoteCell.swift */,
+				51C2C36323410D3300B1A313 /* ImageCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -437,6 +440,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51C2C36423410D3300B1A313 /* ImageCollectionViewCell.swift in Sources */,
 				51FCBDC7233FA3E700136A17 /* TaskDetailsViewController.swift in Sources */,
 				5173B95E23224983005AD2F9 /* NewTaskViewControler.swift in Sources */,
 				51FCBDCB233FA85E00136A17 /* FullScreenImageViewController.swift in Sources */,
