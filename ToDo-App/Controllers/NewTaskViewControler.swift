@@ -28,7 +28,6 @@ class NewTaskViewControler: UIViewController {
     var dateTime: String?
     
     var attachPhotoUrl: UIImage?
-    var stringImageUrl: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,14 +78,17 @@ class NewTaskViewControler: UIViewController {
                     }
                     
                     guard let url = url else { return }
-                    self.stringImageUrl = url.absoluteString
+                    let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: url.absoluteString)
+                    let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
+                    noteRef.setValue(noteItem.toAnyObject())
+
                 })
             })
+        } else {
+            let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: nil)
+            let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
+            noteRef.setValue(noteItem.toAnyObject())
         }
-        
-        let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: self.stringImageUrl)
-        let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
-        noteRef.setValue(noteItem.toAnyObject())
         
         self.dismiss(animated: true, completion: nil)
     }
