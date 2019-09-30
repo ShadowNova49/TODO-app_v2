@@ -20,6 +20,8 @@ class NewTaskViewControler: UIViewController {
     @IBOutlet weak var noteNameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextView!
     @IBOutlet weak var attachingImageView: UIImageView!
+    @IBOutlet weak var imageNameLabel: UILabel!
+    @IBOutlet weak var imageSizeLabel: UILabel!
     
     @IBOutlet var slideMenu: UIView!
     
@@ -84,6 +86,7 @@ class NewTaskViewControler: UIViewController {
                     }
                     
                     guard let url = url else { return }
+                    //TODO: Вынести это в отдельную функциюю с условием - ??
                     let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: url.absoluteString)
                     let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
                     noteRef.setValue(noteItem.toAnyObject())

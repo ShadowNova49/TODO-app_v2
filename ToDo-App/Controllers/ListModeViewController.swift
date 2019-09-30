@@ -13,6 +13,18 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet var noteDetailsView: UIView!
+    @IBOutlet var noteNameTextField: UITextField!
+    @IBOutlet var noteDateTimeTextField: UITextField!
+    @IBOutlet var noteDescriptionTextField: UITextView!
+    @IBOutlet var noteAttachedImage: UIImageView! {
+        didSet {
+            noteAttachedImage.isUserInteractionEnabled = true
+            let tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(self.imageTap))
+            noteAttachedImage.addGestureRecognizer(tapGesture)
+        }
+    }
+    
     let transition = Slider()
     var roundButton = UIButton()
     
@@ -21,9 +33,13 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
     var ref: DatabaseReference!
     private var databaseHandle: DatabaseHandle!
     
+    @IBAction func doneButton(_ sender: UIButton) {
+        self.noteDetailsView.removeFromSuperview()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //addResultButtonView()
+        
         self.roundButton = UIButton(type: .custom)
         self.roundButton.setTitleColor(UIColor.blue, for: .normal)
         self.roundButton.addTarget(self, action: #selector(ButtonClick(_:)), for: UIControl.Event.touchUpInside)
@@ -67,6 +83,23 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
             performSegue(withIdentifier: "SignOut", sender: nil)
         } catch let error {
             assertionFailure("Error signing out: \(error)")
+        }
+    }
+    
+    @objc func imageTap() {
+        if self.noteAttachedImage.image != nil {
+            self.performSegue(withIdentifier: "ShowFullScreenImage", sender: self.noteAttachedImage.image)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "ShowFullScreenImage") {
+            let viewController = segue.destination as! FullScreenImageViewController
+            let image = sender as? UIImage
+            
+            if let noteImage = image {
+                viewController.image = noteImage
+            }
         }
     }
     
@@ -114,10 +147,31 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.view.addSubview(noteDetailsView)
+        noteDetailsView.center = self.view.center
+        
+        if let name = ListModeViewController.items[indexPath.row].name {
+            noteNameTextField.text = name
+        }
+        
+        if let noteDescription = ListModeViewController.items[indexPath.row].noteDescription {
+            noteDescriptionTextField.text = noteDescription
+        }
+        
+        if let dateTime = ListModeViewController.items[indexPath.row].dateTime {
+            noteDateTimeTextField.text = dateTime
+        }
+        
+        if let attachedImageUrl = ListModeViewController.items[indexPath.row].attachPhotoUrl {
+            noteAttachedImage.loadImageUsingCacheWithUrlString(attachedImageUrl)
+        }
+        
+        //noteDetailsView.
         //self.selectedIndexPath = indexPath
-        self.performSegue(withIdentifier: "ShowDetails", sender: indexPath.row)
+        //self.performSegue(withIdentifier: "ShowDetails", sender: indexPath.row)
     }
     
+    /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if (segue.identifier == "ShowDetails") {
@@ -144,7 +198,7 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
-    
+    */
 }
 
 extension ListModeViewController: UIViewControllerTransitioningDelegate {

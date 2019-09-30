@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Photos
 
 extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -16,6 +17,8 @@ extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationCon
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         
         var selectedImageFromPicker: UIImage?
+        var selectedImageName: String?
+        var selectedImageSize: String?
         
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
             selectedImageFromPicker = editedImage
@@ -23,9 +26,26 @@ extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationCon
             selectedImageFromPicker = originalImage
         }
         
+        
+        if let imageData = selectedImageFromPicker!.pngData() {
+            let bytes = imageData.count
+            //let kB = Double(bytes) / 1000.0 // Note the difference
+            let KB = Double(bytes) / 1024.0 // Note the difference
+            print(KB)
+        }
+        
+        if let asset = info["UIImagePickerControllerPHAsset"] as? PHAsset {
+            let assetResources = PHAssetResource.assetResources(for: asset)
+            selectedImageName = assetResources.first!.originalFilename
+        }
+        
         if let selectedImage = selectedImageFromPicker {
+            //print(selectedImageName)
             attachPhotoUrl = selectedImage
             attachingImageView.image = attachPhotoUrl
+            imageNameLabel.text = selectedImageName
+            //imageSizeLabel.text = selectedImageSize
+            //print(selectedImageSize)
         }
         
         dismiss(animated: true, completion: nil)
@@ -36,6 +56,10 @@ extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationCon
         print("canceled picker")
         dismiss(animated: true, completion: nil)
     }
+}
+
+func generateNameForImage() -> String {
+    return "IMG_random_string"
 }
 
 fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {

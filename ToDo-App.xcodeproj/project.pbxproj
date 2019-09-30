@@ -114,6 +114,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		513B344F23420960000CBBA3 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				519C6280232FCADD00D243E2 /* SignUpViewController.swift */,
+				519C627F232FCADD00D243E2 /* LoginViewController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		5146144E2342508800DBBC00 /* archive */ = {
+			isa = PBXGroup;
+			children = (
+				51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */,
+			);
+			path = archive;
+			sourceTree = "<group>";
+		};
 		51893CE12320D116001EADC0 = {
 			isa = PBXGroup;
 			children = (
@@ -164,25 +181,24 @@
 			isa = PBXGroup;
 			children = (
 				51234D11233E6A3C00C823DA /* ListModeViewController.swift */,
+				514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */,
 				5173B95D23224983005AD2F9 /* NewTaskViewControler.swift */,
 				514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */,
-				51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */,
-				519C6280232FCADD00D243E2 /* SignUpViewController.swift */,
-				519C627F232FCADD00D243E2 /* LoginViewController.swift */,
-				514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */,
 				51FCBDCA233FA85E00136A17 /* FullScreenImageViewController.swift */,
-				51FC35F52337F7B40094C4FA /* not done */,
+				5146144E2342508800DBBC00 /* archive */,
+				513B344F23420960000CBBA3 /* Authentication */,
+				51FC35F52337F7B40094C4FA /* undone */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		51FC35F52337F7B40094C4FA /* not done */ = {
+		51FC35F52337F7B40094C4FA /* undone */ = {
 			isa = PBXGroup;
 			children = (
 				516295FA232E71CF0072F575 /* DoneTasksViewController.swift */,
 				516295FE232E74A20072F575 /* CalendarModeViewController.swift */,
 			);
-			path = "not done";
+			path = undone;
 			sourceTree = "<group>";
 		};
 		51FC35F6233800810094C4FA /* Views */ = {

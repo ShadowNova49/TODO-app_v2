@@ -11,7 +11,7 @@ import Firebase
 
 class GalleryViewController: UIViewController {
     
-    @IBOutlet weak var collectionView:  UICollectionView!
+    @IBOutlet weak var collectionView: UICollectionView!
 
     var imagesUrl = [String]()
     var itemWithImage: Int = 0
