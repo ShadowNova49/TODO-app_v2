@@ -25,6 +25,7 @@ extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationCon
         
         if let selectedImage = selectedImageFromPicker {
             attachPhotoUrl = selectedImage
+            attachingImageView.image = attachPhotoUrl
         }
         
         dismiss(animated: true, completion: nil)

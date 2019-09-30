@@ -42,9 +42,9 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
         //roundButton.setImage(UIImage(named:"your-image"), for: .normal)
         roundButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            roundButton.leadingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.leadingAnchor, constant: 167),
+            roundButton.leadingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.leadingAnchor, constant: 175),
             //roundButton.trailingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.trailingAnchor, constant: -170),
-            roundButton.bottomAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.bottomAnchor, constant: -5),
+            roundButton.bottomAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.bottomAnchor, constant: 0),
             roundButton.widthAnchor.constraint(equalToConstant: 50), roundButton.heightAnchor.constraint(equalToConstant: 50)])
     }
     
@@ -71,7 +71,7 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func startObservingDatabase () {
-        //databaseHandle = ref.child("notes").observe(.value, with:
+        
         databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
             var newItems = [Item]()
             

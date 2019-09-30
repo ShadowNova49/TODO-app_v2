@@ -19,6 +19,7 @@ class NewTaskViewControler: UIViewController {
 
     @IBOutlet weak var noteNameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextView!
+    @IBOutlet weak var attachingImageView: UIImageView!
     
     @IBOutlet var slideMenu: UIView!
     
@@ -54,6 +55,11 @@ class NewTaskViewControler: UIViewController {
         picker.allowsEditing = true
         
         present(picker, animated: true, completion: nil)
+    }
+    
+    @IBAction func didTapDeleteAttachedPhoto (_ sender: UIButton) {
+        attachPhotoUrl = nil
+        attachingImageView.image = nil
     }
     
     @IBAction func didTapAddItem(_ sender: UIButton) {
