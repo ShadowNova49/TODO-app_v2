@@ -11,6 +11,7 @@ target 'ToDo-App' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
+  pod 'Kingfisher', '~> 4.10.0' 
   
   # Pods for ToDo-App
 

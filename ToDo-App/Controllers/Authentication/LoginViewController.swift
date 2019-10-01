@@ -16,12 +16,12 @@ class LoginViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
         if let _ = Auth.auth().currentUser {
             self.signIn()
         }
     }
-
+    
     @IBAction func didTapSignIn(_ sender: UIButton) {
         let email = emailField.text
         let password = passwordField.text
@@ -43,11 +43,11 @@ class LoginViewController: UIViewController {
                 assertionFailure("user and error are nil")
                 return
             }
-
+            
             self.signIn()
         })
     }
-
+    
     @IBAction func didRequestPasswordReset(_ sender: UIButton) {
         let prompt = UIAlertController(title: "ToDo-App", message: "Email:", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
@@ -81,15 +81,15 @@ class LoginViewController: UIViewController {
         prompt.addAction(okAction)
         present(prompt, animated: true, completion: nil)
     }
-
+    
     func showAlert(_ message: String) {
         let alertController = UIAlertController(title: "To Do App", message: message, preferredStyle: UIAlertController.Style.alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertAction.Style.default,handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
-
+    
     func signIn() {
         performSegue(withIdentifier: "SignInFromLogin", sender: nil)
     }
-
+    
 }

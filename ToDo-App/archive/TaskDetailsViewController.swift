@@ -55,6 +55,6 @@ class TaskDetailsViewController: UIViewController {
     }
     
     @IBAction func doneButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "ShowListMode", sender: nil)
+        
     }
 }

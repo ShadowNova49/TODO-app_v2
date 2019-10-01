@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ListModeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ListModeViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -33,10 +33,6 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
     var ref: DatabaseReference!
     private var databaseHandle: DatabaseHandle!
     
-    @IBAction func doneButton(_ sender: UIButton) {
-        self.noteDetailsView.removeFromSuperview()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,20 +44,13 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
         user = Auth.auth().currentUser
         ref = Database.database().reference()
         startObservingDatabase()
+        
+        let tapToDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(touchWasDetected(_:)))
+        self.noteDetailsView.addGestureRecognizer(tapToDismissKeyboard)
     }
     
     override func viewWillLayoutSubviews() {
-        roundButton.layer.cornerRadius = roundButton.layer.frame.size.width/2
-        roundButton.backgroundColor = UIColor.lightGray
-        roundButton.clipsToBounds = true
-        roundButton.setTitle("+", for: .normal)
-        //roundButton.setImage(UIImage(named:"your-image"), for: .normal)
-        roundButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            roundButton.leadingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.leadingAnchor, constant: 175),
-            //roundButton.trailingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.trailingAnchor, constant: -170),
-            roundButton.bottomAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-            roundButton.widthAnchor.constraint(equalToConstant: 50), roundButton.heightAnchor.constraint(equalToConstant: 50)])
+        self.setUpRoundButton()
     }
     
     /** Action Handler for button **/
@@ -103,6 +92,28 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    @objc func touchWasDetected(_ sender: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+    
+    @IBAction func doneButton(_ sender: UIButton) {
+        self.noteDetailsView.removeFromSuperview()
+    }
+    
+    func setUpRoundButton() {
+        roundButton.layer.cornerRadius = roundButton.layer.frame.size.width/2
+        roundButton.backgroundColor = UIColor.lightGray
+        roundButton.clipsToBounds = true
+        roundButton.setTitle("+", for: .normal)
+        //roundButton.setImage(UIImage(named:"your-image"), for: .normal)
+        roundButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            roundButton.leadingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.leadingAnchor, constant: 175),
+            //roundButton.trailingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.trailingAnchor, constant: -170),
+            roundButton.bottomAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            roundButton.widthAnchor.constraint(equalToConstant: 50), roundButton.heightAnchor.constraint(equalToConstant: 50)])
+    }
+    
     func startObservingDatabase () {
         
         databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
@@ -122,29 +133,9 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
     deinit {
         ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
     }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ListModeViewController.items.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as! NoteCell
-        let item = ListModeViewController.items[indexPath.row]
-        cell.noteNameLabel.text = item.name
-        cell.noteDateTimeLabel.text = item.dateTime
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let item = ListModeViewController.items[indexPath.row]
-            item.ref?.removeValue()
-        }
-    }
+}
+
+extension ListModeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.view.addSubview(noteDetailsView)
@@ -163,42 +154,37 @@ class ListModeViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         if let attachedImageUrl = ListModeViewController.items[indexPath.row].attachPhotoUrl {
-            noteAttachedImage.loadImageUsingCacheWithUrlString(attachedImageUrl)
+            noteAttachedImage.kf.indicatorType = .activity
+            noteAttachedImage.kf.setImage(with: URL(string: attachedImageUrl), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
         }
-        
-        //noteDetailsView.
-        //self.selectedIndexPath = indexPath
-        //self.performSegue(withIdentifier: "ShowDetails", sender: indexPath.row)
+    }
+}
+
+extension ListModeViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
-    /*
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if (segue.identifier == "ShowDetails") {
-            let viewController = segue.destination as! TaskDetailsViewController
-            let indexPath = sender as? Int
-            
-            //print(indexPath!)
-            //print(items[indexPath!])
-            
-            if let name = ListModeViewController.items[indexPath!].name {
-                viewController.name = name
-            }
-            
-            if let dateTime = ListModeViewController.items[indexPath!].dateTime {
-                viewController.dateTime = dateTime
-            }
-            
-            if let description = ListModeViewController.items[indexPath!].noteDescription {
-                viewController.noteDescription = description
-            }
-            
-            if let attachedImage = ListModeViewController.items[indexPath!].attachPhotoUrl {
-                viewController.attachedImageUrl = attachedImage
-            }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return ListModeViewController.items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as! NoteCell
+
+        let item = ListModeViewController.items[indexPath.row]
+        cell.noteNameLabel.text = item.name
+        cell.noteDateTimeLabel.text = item.dateTime
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let item = ListModeViewController.items[indexPath.row]
+            item.ref?.removeValue()
         }
     }
-    */
 }
 
 extension ListModeViewController: UIViewControllerTransitioningDelegate {

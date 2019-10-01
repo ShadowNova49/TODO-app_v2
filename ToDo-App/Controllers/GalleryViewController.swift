@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Kingfisher
 
 class GalleryViewController: UIViewController {
     
@@ -40,7 +41,8 @@ extension GalleryViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
-        cell.imageView.loadImageUsingCacheWithUrlString(imagesUrl[indexPath.row])
+        //cell.imageView.loadImageUsingCacheWithUrlString(imagesUrl[indexPath.row])
+        cell.imageView.kf.setImage(with: URL(string: imagesUrl[indexPath.row]), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
         return cell
     }
 }

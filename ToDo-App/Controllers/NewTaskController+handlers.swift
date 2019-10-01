@@ -17,7 +17,7 @@ extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationCon
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         
         var selectedImageFromPicker: UIImage?
-        var selectedImageName: String?
+        //var selectedImageName: String?
         var selectedImageSize: String?
         
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
@@ -29,27 +29,29 @@ extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationCon
         
         if let imageData = selectedImageFromPicker!.pngData() {
             let bytes = imageData.count
-            //let kB = Double(bytes) / 1000.0 // Note the difference
-            let KB = Double(bytes) / 1024.0 // Note the difference
-            print(KB)
+            let KB = Double(bytes) / 1048576
+            selectedImageSize = "\(String(format: "%.2f", KB)) MB"
         }
-        
+        /*
         if let asset = info["UIImagePickerControllerPHAsset"] as? PHAsset {
-            let assetResources = PHAssetResource.assetResources(for: asset)
-            selectedImageName = assetResources.first!.originalFilename
+            if let fileName = (asset.value(forKey: "filename")) as? String {
+                selectedImageSize = fileName
+            } else {
+                selectedImageSize = generateNameForImage()
+                print(selectedImageName)
+            }
         }
+        */
         
         if let selectedImage = selectedImageFromPicker {
-            //print(selectedImageName)
             attachPhotoUrl = selectedImage
             attachingImageView.image = attachPhotoUrl
-            imageNameLabel.text = selectedImageName
-            //imageSizeLabel.text = selectedImageSize
-            //print(selectedImageSize)
+            imageNameLabel.text = generateNameForImage()
+            imageSizeLabel.text = selectedImageSize
+            cancelImageButton.isHidden = false
         }
         
         dismiss(animated: true, completion: nil)
-        
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

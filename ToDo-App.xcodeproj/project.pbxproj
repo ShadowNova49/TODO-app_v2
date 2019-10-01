@@ -52,7 +52,6 @@
 /* Begin PBXFileReference section */
 		28AAC5BC2352376FCB5687A8 /* Pods-ToDo-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo-App.debug.xcconfig"; path = "Target Support Files/Pods-ToDo-App/Pods-ToDo-App.debug.xcconfig"; sourceTree = "<group>"; };
 		51234D11233E6A3C00C823DA /* ListModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListModeViewController.swift; sourceTree = "<group>"; };
-		51234D15233E6A8A00C823DA /* Baloo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Baloo-Regular.ttf"; path = "Controllers/not done/Baloo-Regular.ttf"; sourceTree = "<group>"; };
 		514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTaskController+handlers.swift"; sourceTree = "<group>"; };
 		516295FA232E71CF0072F575 /* DoneTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneTasksViewController.swift; sourceTree = "<group>"; };
@@ -123,9 +122,10 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
-		5146144E2342508800DBBC00 /* archive */ = {
+		51471F8A23438EB100F35CBE /* archive */ = {
 			isa = PBXGroup;
 			children = (
+				51FCBDC8233FA4A400136A17 /* Extensions.swift */,
 				51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */,
 			);
 			path = archive;
@@ -160,10 +160,10 @@
 				51FC35F02337D9D10094C4FA /* Controllers */,
 				51893CF42320D118001EADC0 /* Assets.xcassets */,
 				51893CED2320D116001EADC0 /* AppDelegate.swift */,
-				51234D15233E6A8A00C823DA /* Baloo-Regular.ttf */,
 				51893CF92320D118001EADC0 /* Info.plist */,
 				51893CF62320D118001EADC0 /* LaunchScreen.storyboard */,
 				519C627D232FC05A00D243E2 /* GoogleService-Info.plist */,
+				51471F8A23438EB100F35CBE /* archive */,
 			);
 			path = "ToDo-App";
 			sourceTree = "<group>";
@@ -172,7 +172,6 @@
 			isa = PBXGroup;
 			children = (
 				51FC35FB233812CF0094C4FA /* Item.swift */,
-				51FCBDC8233FA4A400136A17 /* Extensions.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -185,7 +184,6 @@
 				5173B95D23224983005AD2F9 /* NewTaskViewControler.swift */,
 				514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */,
 				51FCBDCA233FA85E00136A17 /* FullScreenImageViewController.swift */,
-				5146144E2342508800DBBC00 /* archive */,
 				513B344F23420960000CBBA3 /* Authentication */,
 				51FC35F52337F7B40094C4FA /* undone */,
 			);

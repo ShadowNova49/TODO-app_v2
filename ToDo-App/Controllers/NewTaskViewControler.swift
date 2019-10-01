@@ -11,7 +11,7 @@ import Firebase
 import FirebaseStorage
 
 class NewTaskViewControler: UIViewController {
-
+    
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var dateTextField: UITextField!
     let datePicker = UIDatePicker()
@@ -22,6 +22,7 @@ class NewTaskViewControler: UIViewController {
     @IBOutlet weak var attachingImageView: UIImageView!
     @IBOutlet weak var imageNameLabel: UILabel!
     @IBOutlet weak var imageSizeLabel: UILabel!
+    @IBOutlet weak var cancelImageButton: UIButton!
     
     @IBOutlet var slideMenu: UIView!
     
@@ -62,6 +63,9 @@ class NewTaskViewControler: UIViewController {
     @IBAction func didTapDeleteAttachedPhoto (_ sender: UIButton) {
         attachPhotoUrl = nil
         attachingImageView.image = nil
+        imageNameLabel.text = nil
+        imageSizeLabel.text = nil
+        cancelImageButton.isHidden = true
     }
     
     @IBAction func didTapAddItem(_ sender: UIButton) {
