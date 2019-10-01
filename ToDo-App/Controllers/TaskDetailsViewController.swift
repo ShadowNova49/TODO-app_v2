@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class TaskDetailsViewController: UIViewController {
     
@@ -33,7 +34,7 @@ class TaskDetailsViewController: UIViewController {
         self.noteDescriptionTextField.text = noteDescription
         
         if let attachedImageUrl = attachedImageUrl {
-            noteAttachedImage.loadImageUsingCacheWithUrlString(attachedImageUrl)
+            noteAttachedImage.kf.setImage(with: URL(string: attachedImageUrl))
         }
     }
     
@@ -55,6 +56,6 @@ class TaskDetailsViewController: UIViewController {
     }
     
     @IBAction func doneButton(_ sender: UIButton) {
-        
+        dismiss(animated: true, completion: nil)
     }
 }

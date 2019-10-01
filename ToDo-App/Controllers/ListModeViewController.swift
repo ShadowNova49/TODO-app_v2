@@ -12,7 +12,7 @@ import Firebase
 class ListModeViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    
+    /*
     @IBOutlet var noteDetailsView: UIView!
     @IBOutlet var noteNameTextField: UITextField!
     @IBOutlet var noteDateTimeTextField: UITextField!
@@ -24,6 +24,7 @@ class ListModeViewController: UIViewController {
             noteAttachedImage.addGestureRecognizer(tapGesture)
         }
     }
+ */
     
     let transition = Slider()
     var roundButton = UIButton()
@@ -45,8 +46,8 @@ class ListModeViewController: UIViewController {
         ref = Database.database().reference()
         startObservingDatabase()
         
-        let tapToDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(touchWasDetected(_:)))
-        self.noteDetailsView.addGestureRecognizer(tapToDismissKeyboard)
+        //let tapToDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(touchWasDetected(_:)))
+        //self.noteDetailsView.addGestureRecognizer(tapToDismissKeyboard)
     }
     
     override func viewWillLayoutSubviews() {
@@ -75,6 +76,7 @@ class ListModeViewController: UIViewController {
         }
     }
     
+    /*
     @objc func imageTap() {
         if self.noteAttachedImage.image != nil {
             self.performSegue(withIdentifier: "ShowFullScreenImage", sender: self.noteAttachedImage.image)
@@ -91,14 +93,17 @@ class ListModeViewController: UIViewController {
             }
         }
     }
+     
+     @IBAction func doneButton(_ sender: UIButton) {
+        self.noteDetailsView.removeFromSuperview()
+     }
+     
+    */
     
     @objc func touchWasDetected(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
     
-    @IBAction func doneButton(_ sender: UIButton) {
-        self.noteDetailsView.removeFromSuperview()
-    }
     
     func setUpRoundButton() {
         roundButton.layer.cornerRadius = roundButton.layer.frame.size.width/2
@@ -115,7 +120,6 @@ class ListModeViewController: UIViewController {
     }
     
     func startObservingDatabase () {
-        
         databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
             var newItems = [Item]()
             
@@ -126,7 +130,6 @@ class ListModeViewController: UIViewController {
             
             ListModeViewController.items = newItems
             self.tableView.reloadData()
-            
         })
     }
     
@@ -135,28 +138,43 @@ class ListModeViewController: UIViewController {
     }
 }
 
-extension ListModeViewController: UITableViewDelegate {
+extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationControllerDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.view.addSubview(noteDetailsView)
-        noteDetailsView.center = self.view.center
+        
+        let selectedCellSourceView = tableView.cellForRow(at: indexPath)
+        //let selectedCellSourceRect =
+
+        guard let popover = storyboard?.instantiateViewController(withIdentifier: "TaskDetailsViewController") as? TaskDetailsViewController else { return }
+        popover.modalPresentationStyle = .popover
+        popover.popoverPresentationController?.backgroundColor = UIColor(red: 0.93, green: 0.98, blue: 0.93, alpha: 1.00)
+        popover.popoverPresentationController?.delegate = self
+        popover.popoverPresentationController?.sourceView = selectedCellSourceView
+        popover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0) // .up
+        popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y, width: 0, height: 0)
+        //popover.preferredContentSize = CGSize(width: 320, height: 420)
         
         if let name = ListModeViewController.items[indexPath.row].name {
-            noteNameTextField.text = name
-        }
-        
-        if let noteDescription = ListModeViewController.items[indexPath.row].noteDescription {
-            noteDescriptionTextField.text = noteDescription
+            popover.name = name
         }
         
         if let dateTime = ListModeViewController.items[indexPath.row].dateTime {
-            noteDateTimeTextField.text = dateTime
+            popover.dateTime = dateTime
         }
         
-        if let attachedImageUrl = ListModeViewController.items[indexPath.row].attachPhotoUrl {
-            noteAttachedImage.kf.indicatorType = .activity
-            noteAttachedImage.kf.setImage(with: URL(string: attachedImageUrl), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
+        if let description = ListModeViewController.items[indexPath.row].noteDescription {
+            popover.noteDescription = description
         }
+        
+        if let attachedImage = ListModeViewController.items[indexPath.row].attachPhotoUrl {
+            popover.attachedImageUrl = attachedImage
+        }
+        
+        self.present(popover, animated: true)
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+            return .none
     }
 }
 
