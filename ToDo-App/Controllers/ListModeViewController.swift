@@ -157,8 +157,12 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
         if let attachedImage = ListModeViewController.items[indexPath.row].attachPhotoUrl {
             popover.attachedImageUrl = attachedImage
         }
+        
+        if let noteUrl = ListModeViewController.items[indexPath.row].ref {
+            popover.ref = noteUrl
+        }
 
-        let noteUrl = ListModeViewController.items[indexPath.row]
+        let noteUrl = ListModeViewController.items[indexPath.row].ref!
         //let index = noteUrl.index(noteUrl.endIndex, offsetBy: -36)
         //let noteId = noteUrl[index...]
         print(noteUrl)

@@ -27,9 +27,7 @@ class TaskDetailsViewController: UIViewController {
     var dateTime: String?
     var noteDescription: String?
     var attachedImageUrl: String?
-    var noteRef: String?
     
-    var user: User!
     var ref: DatabaseReference!
     
     override func viewDidLoad() {
@@ -41,11 +39,6 @@ class TaskDetailsViewController: UIViewController {
         if let attachedImageUrl = attachedImageUrl {
             noteAttachedImage.kf.setImage(with: URL(string: attachedImageUrl))
         }
-        
-        user = Auth.auth().currentUser
-        ref = Database.database().reference().child("users").child(self.user.uid).child("notes/")
-        //let tapToDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(touchWasDetected(_:)))
-        //self.noteDetailsView.addGestureRecognizer(tapToDismissKeyboard)
     }
     
     @objc func imageTap() {
@@ -66,12 +59,12 @@ class TaskDetailsViewController: UIViewController {
     }
     
     @IBAction func doneButton(_ sender: UIButton) {
-        if noteNameTextField.text != name {
-            let key = ref.key
-            //print(key)
+        if noteNameTextField.text != name || noteDescriptionTextField.text != noteDescription {
             let post = [
-                "name": noteNameTextField.text]
-            ref.child(key!).setValue(post)
+                "name": noteNameTextField.text,
+                "noteDescription": noteDescriptionTextField.text
+            ]
+            ref.updateChildValues(post as [AnyHashable : Any])
         }
         dismiss(animated: true, completion: nil)
     }
