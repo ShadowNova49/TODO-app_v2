@@ -49,6 +49,17 @@ class NewTaskViewControler: UIViewController {
         
         let tapToHideMenu = UITapGestureRecognizer(target: self, action: #selector(touchWasDetected(_:)))
         self.view.addGestureRecognizer(tapToHideMenu)
+        
+//        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeGestureDetecred(_:)))
+//        self.view.addGestureRecognizer(swipeGesture)
+    }
+    
+//    @objc func swipeGestureDetecred(_ sender: UISwipeGestureRecognizer) {
+//        dismiss(animated: true, completion: nil)
+//    }
+    
+    @IBAction func swipeGestureDetected(_ sender: UISwipeGestureRecognizer) {
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func didTapAttachPhoto(_ sender: UIButton) {
@@ -107,12 +118,15 @@ class NewTaskViewControler: UIViewController {
     }
     
     @objc func touchWasDetected(_ sender: UITapGestureRecognizer) {
+        /*
         let touchPoint = sender.location(in: view)
         if !slideMenu.frame.contains(touchPoint) {
             dismiss(animated: true, completion: nil)
         } else {
             view.endEditing(true)
         }
+        */
+        view.endEditing(true)
     }
     
     @objc func dateChanged(){

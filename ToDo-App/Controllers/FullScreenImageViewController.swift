@@ -31,7 +31,6 @@ class FullScreenImageViewController: UIViewController {
         if imageUrl == nil {
             self.fullScreenNoteImage.image = image
         } else {
-            //self.fullScreenNoteImage.loadImageUsingCacheWithUrlString(imageUrl!)
             self.fullScreenNoteImage.kf.setImage(with: URL(string: imageUrl!), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
         }
         
@@ -39,6 +38,5 @@ class FullScreenImageViewController: UIViewController {
     
     @objc func hideImage() {
         dismiss(animated: true, completion: nil)
-        //self.performSegue(withIdentifier: "ShowListMode", sender: self)
     }
 }

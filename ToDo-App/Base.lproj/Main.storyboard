@@ -183,6 +183,9 @@
                             <constraint firstItem="4Tm-rx-yrF" firstAttribute="top" secondItem="1OM-dl-76z" secondAttribute="bottom" constant="20" id="zWN-cr-F1n"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bWc-6e-omS"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="2AC-Jb-yz0" appends="YES" id="Isu-kr-GcV"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="VgO-RX-gDr"/>
                     <size key="freeformSize" width="375" height="667"/>
@@ -199,6 +202,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uQL-wi-gQF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="2AC-Jb-yz0">
+                    <connections>
+                        <action selector="swipeGestureDetected:" destination="9VT-vS-TbS" id="w14-uj-nr2"/>
+                        <outlet property="delegate" destination="AJs-Wy-ONZ" id="yx4-Ln-rFw"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="4640.8000000000002" y="257.72113943028489"/>
         </scene>
@@ -321,11 +330,12 @@
                         <outlet property="noteDateTimeTextField" destination="FKp-K9-26c" id="VfV-F8-arl"/>
                         <outlet property="noteDescriptionTextField" destination="v1k-RB-KKV" id="pVK-kb-vlQ"/>
                         <outlet property="noteNameTextField" destination="sLG-Lj-5DQ" id="J9u-Ff-tOA"/>
+                        <segue destination="nS6-rX-IcV" kind="showDetail" identifier="ShowFullScreenImage" id="62j-o7-RGs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WE4-jJ-Rjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4342" y="-413"/>
+            <point key="canvasLocation" x="4640" y="1169"/>
         </scene>
         <!--Calendar Mode View Controller-->
         <scene sceneID="kfP-4c-YK7">
@@ -630,6 +640,7 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="kCu-Tg-0mL" firstAttribute="leading" secondItem="tVz-IX-rUu" secondAttribute="leading" id="Gdq-th-4IL"/>
                             <constraint firstItem="kCu-Tg-0mL" firstAttribute="bottom" secondItem="DWw-72-McR" secondAttribute="bottom" id="LeY-OD-3yt"/>
@@ -735,15 +746,15 @@
         <scene sceneID="RwU-yd-QCM">
             <objects>
                 <viewController id="nS6-rX-IcV" customClass="FullScreenImageViewController" customModule="ToDo_App" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="8lt-HX-zY8">
+                    <view key="view" contentMode="scaleToFill" id="8lt-HX-zY8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="i8t-Mj-a1A">
                                 <rect key="frame" x="177" y="323" width="20" height="20"/>
                             </activityIndicatorView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hYU-Ss-6dx">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hYU-Ss-6dx">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -761,7 +772,6 @@
                     </view>
                     <connections>
                         <outlet property="fullScreenNoteImage" destination="hYU-Ss-6dx" id="tiU-fc-pJ9"/>
-                        <segue destination="LVl-Z5-fMe" kind="presentation" identifier="ShowListMode" id="wPx-X1-vQy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j9o-Od-mxB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -773,7 +783,7 @@
         <image name="icon0" width="23" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="y4Z-P0-StG"/>
-        <segue reference="wPx-X1-vQy"/>
+        <segue reference="62j-o7-RGs"/>
+        <segue reference="gPQ-ID-Stp"/>
     </inferredMetricsTieBreakers>
 </document>

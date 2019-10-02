@@ -12,19 +12,6 @@ import Firebase
 class ListModeViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    /*
-    @IBOutlet var noteDetailsView: UIView!
-    @IBOutlet var noteNameTextField: UITextField!
-    @IBOutlet var noteDateTimeTextField: UITextField!
-    @IBOutlet var noteDescriptionTextField: UITextView!
-    @IBOutlet var noteAttachedImage: UIImageView! {
-        didSet {
-            noteAttachedImage.isUserInteractionEnabled = true
-            let tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(self.imageTap))
-            noteAttachedImage.addGestureRecognizer(tapGesture)
-        }
-    }
- */
     
     let transition = Slider()
     var roundButton = UIButton()
@@ -46,8 +33,7 @@ class ListModeViewController: UIViewController {
         ref = Database.database().reference()
         startObservingDatabase()
         
-        //let tapToDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(touchWasDetected(_:)))
-        //self.noteDetailsView.addGestureRecognizer(tapToDismissKeyboard)
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -62,6 +48,7 @@ class ListModeViewController: UIViewController {
         newTaskViewController.transitioningDelegate = self
         present(newTaskViewController, animated: true)
     }
+    
     
     @IBAction func didTapSignOut(_ sender: UIBarButtonItem) {
         handleLogout()
@@ -124,6 +111,7 @@ class ListModeViewController: UIViewController {
             var newItems = [Item]()
             
             for itemSnapShot in snapshot.children {
+                //print(itemSnapShot)
                 let item = Item(snapshot: itemSnapShot as! DataSnapshot)
                 newItems.append(item)
             }
@@ -151,7 +139,7 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
         popover.popoverPresentationController?.delegate = self
         popover.popoverPresentationController?.sourceView = selectedCellSourceView
         popover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0) // .up
-        popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y, width: 0, height: 0)
+        popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y - 200, width: 0, height: 0)
         //popover.preferredContentSize = CGSize(width: 320, height: 420)
         
         if let name = ListModeViewController.items[indexPath.row].name {
@@ -169,15 +157,31 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
         if let attachedImage = ListModeViewController.items[indexPath.row].attachPhotoUrl {
             popover.attachedImageUrl = attachedImage
         }
+
+        let noteUrl = ListModeViewController.items[indexPath.row]
+        //let index = noteUrl.index(noteUrl.endIndex, offsetBy: -36)
+        //let noteId = noteUrl[index...]
+        print(noteUrl)
         
         self.present(popover, animated: true)
+        if let pop = popover.popoverPresentationController {
+            popover.isModalInPopover = true
+            delay(0.1) {
+                pop.passthroughViews = nil
+            }
+        }
+    }
+    
+    func delay(_ delay:Double, closure:@escaping ()->()) {
+        let when = DispatchTime.now() + delay
+        DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
     }
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
             return .none
     }
 }
-
+    
 extension ListModeViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
