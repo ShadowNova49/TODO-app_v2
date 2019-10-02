@@ -89,7 +89,8 @@ class NewTaskViewControler: UIViewController {
             dateTime = dateTextField.text! + " " + timeTextField.text!
         }
         
-        let storageRef = Storage.storage().reference().child("note_attach_image").child("\(NSUUID().uuidString).png")
+        let address = NSUUID().uuidString
+        let storageRef = Storage.storage().reference().child("note_attach_image").child("\(address).png")
         
         if let uploadData = self.attachPhotoUrl?.pngData() {
             storageRef.putData(uploadData, metadata: nil, completion: { (_, err) in
@@ -102,14 +103,14 @@ class NewTaskViewControler: UIViewController {
                     
                     guard let url = url else { return }
                     //TODO: Вынести это в отдельную функциюю с условием - ??
-                    let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: url.absoluteString)
+                    let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: url.absoluteString, attachPhotoName: address)
                     let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
                     noteRef.setValue(noteItem.toAnyObject())
 
                 })
             })
         } else {
-            let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: nil)
+            let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: nil, attachPhotoName: nil)
             let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
             noteRef.setValue(noteItem.toAnyObject())
         }
@@ -118,14 +119,6 @@ class NewTaskViewControler: UIViewController {
     }
     
     @objc func touchWasDetected(_ sender: UITapGestureRecognizer) {
-        /*
-        let touchPoint = sender.location(in: view)
-        if !slideMenu.frame.contains(touchPoint) {
-            dismiss(animated: true, completion: nil)
-        } else {
-            view.endEditing(true)
-        }
-        */
         view.endEditing(true)
     }
     

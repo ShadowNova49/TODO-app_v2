@@ -32,8 +32,6 @@ class ListModeViewController: UIViewController {
         user = Auth.auth().currentUser
         ref = Database.database().reference()
         startObservingDatabase()
-        
-        
     }
     
     override func viewWillLayoutSubviews() {
@@ -63,30 +61,6 @@ class ListModeViewController: UIViewController {
         }
     }
     
-    /*
-    @objc func imageTap() {
-        if self.noteAttachedImage.image != nil {
-            self.performSegue(withIdentifier: "ShowFullScreenImage", sender: self.noteAttachedImage.image)
-        }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "ShowFullScreenImage") {
-            let viewController = segue.destination as! FullScreenImageViewController
-            let image = sender as? UIImage
-            
-            if let noteImage = image {
-                viewController.image = noteImage
-            }
-        }
-    }
-     
-     @IBAction func doneButton(_ sender: UIButton) {
-        self.noteDetailsView.removeFromSuperview()
-     }
-     
-    */
-    
     @objc func touchWasDetected(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
@@ -111,7 +85,6 @@ class ListModeViewController: UIViewController {
             var newItems = [Item]()
             
             for itemSnapShot in snapshot.children {
-                //print(itemSnapShot)
                 let item = Item(snapshot: itemSnapShot as! DataSnapshot)
                 newItems.append(item)
             }
@@ -131,7 +104,6 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let selectedCellSourceView = tableView.cellForRow(at: indexPath)
-        //let selectedCellSourceRect =
 
         guard let popover = storyboard?.instantiateViewController(withIdentifier: "TaskDetailsViewController") as? TaskDetailsViewController else { return }
         popover.modalPresentationStyle = .popover
@@ -145,27 +117,18 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
         if let name = ListModeViewController.items[indexPath.row].name {
             popover.name = name
         }
-        
         if let dateTime = ListModeViewController.items[indexPath.row].dateTime {
             popover.dateTime = dateTime
         }
-        
         if let description = ListModeViewController.items[indexPath.row].noteDescription {
             popover.noteDescription = description
         }
-        
         if let attachedImage = ListModeViewController.items[indexPath.row].attachPhotoUrl {
             popover.attachedImageUrl = attachedImage
         }
-        
         if let noteUrl = ListModeViewController.items[indexPath.row].ref {
             popover.ref = noteUrl
         }
-
-        let noteUrl = ListModeViewController.items[indexPath.row].ref!
-        //let index = noteUrl.index(noteUrl.endIndex, offsetBy: -36)
-        //let noteId = noteUrl[index...]
-        print(noteUrl)
         
         self.present(popover, animated: true)
         if let pop = popover.popoverPresentationController {
@@ -183,6 +146,39 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
             return .none
+    }
+       
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+            // TODO: Delete todo
+            let item = ListModeViewController.items[indexPath.row]
+            item.ref?.removeValue()
+            
+            let imageRef = Storage.storage().reference().child("note_attach_image").child("\(item.attachPhotoName!).png")
+            print(item.attachPhotoUrl!)
+            imageRef.delete {
+                error in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("File deleted successfully")
+                }
+            }
+        }
+        action.backgroundColor = .red
+        
+        return UISwipeActionsConfiguration(actions: [action])
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .destructive, title: "Check") { (action, view, completion) in
+            let item = ListModeViewController.items[indexPath.row]
+            let post = [ "isDone": true ]
+            item.ref!.updateChildValues(post as [AnyHashable : Any])
+        }
+        action.backgroundColor = .green
+        
+        return UISwipeActionsConfiguration(actions: [action])
     }
 }
     
@@ -204,13 +200,29 @@ extension ListModeViewController: UITableViewDataSource {
         cell.noteDateTimeLabel.text = item.dateTime
         return cell
     }
-    
+    /*
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let item = ListModeViewController.items[indexPath.row]
+        
         if editingStyle == .delete {
-            let item = ListModeViewController.items[indexPath.row]
             item.ref?.removeValue()
+            
+            let imageRef = Storage.storage().reference().child("note_attach_image").child("\(item.attachPhotoName!).png")
+            print(item.attachPhotoUrl!)
+            imageRef.delete {
+                error in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("File deleted successfully")
+                }
+            }
+        } else if editingStyle == .insert {
+            let post = [ "isDone": "true" ]
+            item.ref!.updateChildValues(post as [AnyHashable : Any])
         }
     }
+    */
 }
 
 extension ListModeViewController: UIViewControllerTransitioningDelegate {

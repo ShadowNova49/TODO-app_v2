@@ -754,7 +754,7 @@
                                 <rect key="frame" x="177" y="323" width="20" height="20"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hYU-Ss-6dx">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -783,7 +783,7 @@
         <image name="icon0" width="23" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="62j-o7-RGs"/>
+        <segue reference="y4Z-P0-StG"/>
         <segue reference="gPQ-ID-Stp"/>
     </inferredMetricsTieBreakers>
 </document>
