@@ -10,77 +10,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ToDo-App/Controllers/GalleryViewController.swift"
-            timestampString = "591865283.113694"
+            timestampString = "591910050.403595"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ToDo-App/Model/DatabaseObserver.swift"
-            timestampString = "591865283.114087"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
-            landmarkName = "unknown"
-            landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ToDo-App/Model/DatabaseObserver.swift"
-            timestampString = "591865283.114228"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "unknown"
-            landmarkType = "0">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ToDo_App.DatabaseObserver.startObservingDatabase(for: Swift.String) -&gt; Swift.Array&lt;ToDo_App.Item&gt;"
-                  moduleName = "ToDo-App"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nikitasalygin/Documents/GitHub/TODO-app_v2/ToDo-App/Model/DatabaseObserver.swift"
-                  timestampString = "591862535.20237"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "19"
-                  endingLineNumber = "19"
-                  offsetFromSymbolStart = "33">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.FIRDataSnapshot) -&gt; () in ToDo_App.DatabaseObserver.startObservingDatabase(for: Swift.String) -&gt; Swift.Array&lt;ToDo_App.Item&gt;"
-                  moduleName = "ToDo-App"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nikitasalygin/Documents/GitHub/TODO-app_v2/ToDo-App/Model/DatabaseObserver.swift"
-                  timestampString = "591862535.206503"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "21"
-                  endingLineNumber = "21"
-                  offsetFromSymbolStart = "85">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

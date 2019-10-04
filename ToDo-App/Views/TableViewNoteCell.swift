@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NoteCell: UITableViewCell {
+class TableViewNoteCell: UITableViewCell {
     
     @IBOutlet weak var noteNameLabel: UILabel!
     @IBOutlet weak var noteDateTimeLabel: UILabel!

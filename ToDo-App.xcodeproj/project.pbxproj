@@ -22,10 +22,9 @@
 		519C6281232FCADD00D243E2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519C627F232FCADD00D243E2 /* LoginViewController.swift */; };
 		519C6282232FCADD00D243E2 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519C6280232FCADD00D243E2 /* SignUpViewController.swift */; };
 		51C2C36423410D3300B1A313 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C2C36323410D3300B1A313 /* ImageCollectionViewCell.swift */; };
-		51FC35F8233800BB0094C4FA /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FC35F7233800BB0094C4FA /* NoteCell.swift */; };
+		51FC35F8233800BB0094C4FA /* TableViewNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FC35F7233800BB0094C4FA /* TableViewNoteCell.swift */; };
 		51FC35FC233812CF0094C4FA /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FC35FB233812CF0094C4FA /* Item.swift */; };
 		51FCBDC7233FA3E700136A17 /* TaskDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */; };
-		51FCBDC9233FA4A400136A17 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FCBDC8233FA4A400136A17 /* Extensions.swift */; };
 		51FCBDCB233FA85E00136A17 /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FCBDCA233FA85E00136A17 /* FullScreenImageViewController.swift */; };
 		60B3B958052A4D90D25F42EC /* Pods_ToDo_AppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5D98ED6B595ED4FDEDAB24 /* Pods_ToDo_AppTests.framework */; };
 		8D7F97209FE21D044C090017 /* Pods_ToDo_AppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2ED30169F62E555F3337128 /* Pods_ToDo_AppUITests.framework */; };
@@ -71,10 +70,9 @@
 		519C627F232FCADD00D243E2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		519C6280232FCADD00D243E2 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		51C2C36323410D3300B1A313 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
-		51FC35F7233800BB0094C4FA /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
+		51FC35F7233800BB0094C4FA /* TableViewNoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewNoteCell.swift; sourceTree = "<group>"; };
 		51FC35FB233812CF0094C4FA /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailsViewController.swift; sourceTree = "<group>"; };
-		51FCBDC8233FA4A400136A17 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		51FCBDCA233FA85E00136A17 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
 		6762C9E2FBB5B86720718396 /* Pods_ToDo_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ToDo_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DB20D83F669E48F6CF3BEC5 /* Pods-ToDo-AppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo-AppUITests.release.xcconfig"; path = "Target Support Files/Pods-ToDo-AppUITests/Pods-ToDo-AppUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -123,12 +121,15 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
-		51471F8A23438EB100F35CBE /* archive */ = {
+		5148370C2347D65C0039E1CE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				51FCBDC8233FA4A400136A17 /* Extensions.swift */,
+				51893CF62320D118001EADC0 /* LaunchScreen.storyboard */,
+				51893CF42320D118001EADC0 /* Assets.xcassets */,
+				5103E721234713350003C87B /* Baloo-Regular.ttf */,
+				51893CED2320D116001EADC0 /* AppDelegate.swift */,
 			);
-			path = archive;
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		51893CE12320D116001EADC0 = {
@@ -158,13 +159,9 @@
 				51FC35F6233800810094C4FA /* Views */,
 				51FC35EF2337D9B90094C4FA /* Model */,
 				51FC35F02337D9D10094C4FA /* Controllers */,
-				51893CF42320D118001EADC0 /* Assets.xcassets */,
-				5103E721234713350003C87B /* Baloo-Regular.ttf */,
-				51893CED2320D116001EADC0 /* AppDelegate.swift */,
+				5148370C2347D65C0039E1CE /* Supporting Files */,
 				51893CF92320D118001EADC0 /* Info.plist */,
-				51893CF62320D118001EADC0 /* LaunchScreen.storyboard */,
 				519C627D232FC05A00D243E2 /* GoogleService-Info.plist */,
-				51471F8A23438EB100F35CBE /* archive */,
 			);
 			path = "ToDo-App";
 			sourceTree = "<group>";
@@ -183,11 +180,11 @@
 			children = (
 				51234D11233E6A3C00C823DA /* ListModeViewController.swift */,
 				514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */,
+				516295FA232E71CF0072F575 /* DoneTasksViewController.swift */,
 				5173B95D23224983005AD2F9 /* NewTaskViewControler.swift */,
 				514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */,
 				51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */,
 				51FCBDCA233FA85E00136A17 /* FullScreenImageViewController.swift */,
-				516295FA232E71CF0072F575 /* DoneTasksViewController.swift */,
 				513B344F23420960000CBBA3 /* Authentication */,
 			);
 			path = Controllers;
@@ -197,7 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				5173B95B232231FA005AD2F9 /* Slider.swift */,
-				51FC35F7233800BB0094C4FA /* NoteCell.swift */,
+				51FC35F7233800BB0094C4FA /* TableViewNoteCell.swift */,
 				51C2C36323410D3300B1A313 /* ImageCollectionViewCell.swift */,
 			);
 			path = Views;
@@ -452,7 +449,7 @@
 				51FCBDC7233FA3E700136A17 /* TaskDetailsViewController.swift in Sources */,
 				5173B95E23224983005AD2F9 /* NewTaskViewControler.swift in Sources */,
 				51FCBDCB233FA85E00136A17 /* FullScreenImageViewController.swift in Sources */,
-				51FC35F8233800BB0094C4FA /* NoteCell.swift in Sources */,
+				51FC35F8233800BB0094C4FA /* TableViewNoteCell.swift in Sources */,
 				51FC35FC233812CF0094C4FA /* Item.swift in Sources */,
 				5173B95C232231FA005AD2F9 /* Slider.swift in Sources */,
 				519C6281232FCADD00D243E2 /* LoginViewController.swift in Sources */,
@@ -463,7 +460,6 @@
 				51893CEE2320D116001EADC0 /* AppDelegate.swift in Sources */,
 				514D02BD233A1C5700E675F8 /* NewTaskController+handlers.swift in Sources */,
 				5103E7202347130A0003C87B /* DatabaseObserver.swift in Sources */,
-				51FCBDC9233FA4A400136A17 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

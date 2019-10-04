@@ -79,13 +79,13 @@ class ListModeViewController: UIViewController {
         view.endEditing(true)
     }
     
-    
     func setUpDoneTasksButton() {
         doneTasksButton.layer.cornerRadius = doneTasksButton.layer.frame.size.width/2
         doneTasksButton.backgroundColor = UIColor.lightGray
         doneTasksButton.clipsToBounds = true
         doneTasksButton.setTitle("√", for: .normal)
-        //doneTasksButton(UIImage(named:"your-image"), for: .normal)
+        //doneTasksButton.setBackgroundImage(UIImage(named: "icon0"), for: .normal)
+        doneTasksButton.contentMode = .scaleAspectFit
         doneTasksButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             //doneTasksButton.leadingAnchor.constraint(equalTo: undoneTasksTableVIew.safeAreaLayoutGuide.leadingAnchor, constant: 250),
@@ -125,6 +125,7 @@ class ListModeViewController: UIViewController {
     
     deinit {
         ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
+        print("reference has been removed")
     }
 }
 
@@ -221,7 +222,7 @@ extension ListModeViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as! NoteCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as! TableViewNoteCell
 
         let item = self.undoneTasks[indexPath.row]
         cell.noteNameLabel.text = item.name

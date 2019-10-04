@@ -6,41 +6,31 @@
 //  Copyright © 2019 Никита Шалыгин. All rights reserved.
 //
 
-/*
-import Foundation
-import Firebase
 
-class DatabaseObserver {
-    var user: User = Auth.auth().currentUser!
-    var ref: DatabaseReference = Database.database().reference()
-    private var databaseHandle: DatabaseHandle!
-    var newTasks = [Item]()
-    
-    func startObservingDatabase (for key: String) -> [Item] {
-        databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
-            
-            for itemSnapShot in snapshot.children {
-                let item = Item(snapshot: itemSnapShot as! DataSnapshot)
-                
-                switch key {
-                case "ListMode":
-                    if item.isDone == false {
-                        self.newTasks.append(item)
-                    }
-                case "Gallery":
-                    if item.attachPhotoUrl != nil {
-                        self.newTasks.append(item)
-                    }
-                default:
-                    return
-                }
-            }
-        })
-        return newTasks
-    }
-    
-    deinit {
-        ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
-    }
-}
-*/
+//import Foundation
+//import Firebase
+//
+//protocol DatabaseObserver {
+//    var user: User { get set }
+//    var ref: DatabaseReference { get set }
+//    var databaseHandle: DatabaseHandle! { get set }
+//    var newItem: [Item] { get set }
+//    
+//    mutating func startObservingDatabase(_: String) -> [Item]
+//}
+//
+//extension DatabaseObserver {
+//    mutating func startObservingDatabase() -> [Item] {
+//      databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
+//
+//            for itemSnapShot in snapshot.children {
+//                let item = Item(snapshot: itemSnapShot as! DataSnapshot)
+//                if item.isDone == false {
+//                    self.newItem.append(item)
+//                }
+//            }
+//        
+//      })
+//        return newItem
+//    }
+//}

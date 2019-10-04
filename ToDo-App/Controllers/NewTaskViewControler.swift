@@ -128,7 +128,7 @@ class NewTaskViewControler: UIViewController {
         
         switch format {
         case "date":
-            formatter.dateFormat = "dd - MMM - yyyy"
+            formatter.dateFormat = "dd-MMM-yyyy"
             dateTextField.text = formatter.string(from: datePicker.date)
             
         case "time":

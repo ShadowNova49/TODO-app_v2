@@ -45,6 +45,7 @@ class DoneTasksViewController: UIViewController {
     
     deinit {
         ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
+        print("reference has been removed")
     }
     
     @IBAction func dismissView (_ sender: UIBarButtonItem){
@@ -145,7 +146,7 @@ extension DoneTasksViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as! NoteCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as! TableViewNoteCell
         
         let item = self.doneTasks[indexPath.row]
         cell.noteNameLabel.text = item.name
