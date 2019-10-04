@@ -9,7 +9,6 @@ import Foundation
 import FirebaseDatabase
 
 class Item {
-    
     let ref: DatabaseReference?
     let name: String?
     let noteDescription: String?

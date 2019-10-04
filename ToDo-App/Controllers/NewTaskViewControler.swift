@@ -49,14 +49,7 @@ class NewTaskViewControler: UIViewController {
         
         let tapToHideMenu = UITapGestureRecognizer(target: self, action: #selector(touchWasDetected(_:)))
         self.view.addGestureRecognizer(tapToHideMenu)
-        
-//        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeGestureDetecred(_:)))
-//        self.view.addGestureRecognizer(swipeGesture)
     }
-    
-//    @objc func swipeGestureDetecred(_ sender: UISwipeGestureRecognizer) {
-//        dismiss(animated: true, completion: nil)
-//    }
     
     @IBAction func swipeGestureDetected(_ sender: UISwipeGestureRecognizer) {
         dismiss(animated: true, completion: nil)
@@ -64,10 +57,8 @@ class NewTaskViewControler: UIViewController {
     
     @IBAction func didTapAttachPhoto(_ sender: UIButton) {
         let picker = UIImagePickerController()
-        
         picker.delegate = self
         picker.allowsEditing = true
-        
         present(picker, animated: true, completion: nil)
     }
     
@@ -80,17 +71,16 @@ class NewTaskViewControler: UIViewController {
     }
     
     @IBAction func didTapAddItem(_ sender: UIButton) {
-        
         if (noteNameTextField.text!.isEmpty) {
             return
         }
-        
         if (!dateTextField.text!.isEmpty){
             dateTime = dateTextField.text! + " " + timeTextField.text!
         }
         
         let address = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("note_attach_image").child("\(address).png")
+        var noteItem: Item?
         
         if let uploadData = self.attachPhotoUrl?.pngData() {
             storageRef.putData(uploadData, metadata: nil, completion: { (_, err) in
@@ -102,20 +92,23 @@ class NewTaskViewControler: UIViewController {
                     }
                     
                     guard let url = url else { return }
-                    //TODO: Вынести это в отдельную функциюю с условием - ??
-                    let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: url.absoluteString, attachPhotoName: address)
-                    let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
-                    noteRef.setValue(noteItem.toAnyObject())
+                    
+                    noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: url.absoluteString, attachPhotoName: address)
+                    self.addNote(noteItem: noteItem!)
 
                 })
             })
         } else {
-            let noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: nil, attachPhotoName: nil)
-            let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
-            noteRef.setValue(noteItem.toAnyObject())
-        }
+            noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: nil, attachPhotoName: nil)
+            self.addNote(noteItem: noteItem!)
+         }
         
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func addNote(noteItem: Item) {
+        let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
+        noteRef.setValue(noteItem.toAnyObject())
     }
     
     @objc func touchWasDetected(_ sender: UITapGestureRecognizer) {

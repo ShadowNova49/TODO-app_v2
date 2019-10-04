@@ -14,21 +14,39 @@ class GalleryViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
 
-    var imagesUrl = [String]()
-    var itemWithImage: Int = 0
+    var user: User!
+    var ref: DatabaseReference!
+    private var databaseHandle: DatabaseHandle!
+    
+    var itemsWithImage = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         
-        for item in ListModeViewController.items {
-            if item.attachPhotoUrl != nil {
-                imagesUrl.append(item.attachPhotoUrl!)
-                itemWithImage = itemWithImage + 1
+        user = Auth.auth().currentUser
+        ref = Database.database().reference()
+        imageFetcher()
+    }
+    
+    func imageFetcher() {
+        databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
+            var newItems = [String]()
+            
+            for itemSnapShot in snapshot.children {
+                let item = Item(snapshot: itemSnapShot as! DataSnapshot)
+                if item.attachPhotoUrl != nil {
+                    newItems.append(item.attachPhotoUrl!)
+                }
             }
-        }
-        
-        self.collectionView.reloadData()
+            
+            self.itemsWithImage = newItems
+            self.collectionView.reloadData()
+        })
+    }
+    
+    deinit {
+        ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
     }
 }
 
@@ -36,13 +54,13 @@ class GalleryViewController: UIViewController {
 
 extension GalleryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return itemWithImage
+        return self.itemsWithImage.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
         //cell.imageView.loadImageUsingCacheWithUrlString(imagesUrl[indexPath.row])
-        cell.imageView.kf.setImage(with: URL(string: imagesUrl[indexPath.row]), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
+        cell.imageView.kf.setImage(with: URL(string: itemsWithImage[indexPath.row]), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
         return cell
     }
 }
@@ -63,7 +81,7 @@ extension GalleryViewController: UICollectionViewDelegate {
         if segue.identifier == "FromGalleryToGallery" {
             let viewController = segue.destination as! FullScreenImageViewController
             let indexPath = sender as? IndexPath
-            viewController.imageUrl = imagesUrl[indexPath!.row]
+                viewController.imageUrl = itemsWithImage[indexPath!.row]
         }
     }
 }
