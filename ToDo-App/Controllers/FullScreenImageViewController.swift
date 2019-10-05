@@ -9,34 +9,34 @@
 import UIKit
 
 class FullScreenImageViewController: UIViewController {
-    
-    @IBOutlet weak var fullScreenNoteImage: UIImageView! {
-        didSet{
-            fullScreenNoteImage.frame = UIScreen.main.bounds
-            fullScreenNoteImage.backgroundColor = .white
-            fullScreenNoteImage.contentMode = .scaleAspectFit
-            fullScreenNoteImage.isUserInteractionEnabled = true
-            
-            let hideGesture = UITapGestureRecognizer.init(target: self, action: #selector(self.hideImage))
-            fullScreenNoteImage.addGestureRecognizer(hideGesture)
-        }
+  @IBOutlet weak var fullScreenNoteImage: UIImageView! {
+    didSet{
+      fullScreenNoteImage.frame = UIScreen.main.bounds
+      fullScreenNoteImage.backgroundColor = .white
+      fullScreenNoteImage.contentMode = .scaleAspectFit
+      fullScreenNoteImage.isUserInteractionEnabled = true
+      
+      let hideGesture = UITapGestureRecognizer.init(target: self, action: #selector(self.hideImage))
+      fullScreenNoteImage.addGestureRecognizer(hideGesture)
     }
-
-    var image: UIImage?
-    var imageUrl: String?
+  }
+  
+  var image: UIImage?
+  var imageUrl: String?
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        if imageUrl == nil {
-            self.fullScreenNoteImage.image = image
-        } else {
-            self.fullScreenNoteImage.kf.setImage(with: URL(string: imageUrl!), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
-        }
-        
+    if imageUrl == nil {
+      self.fullScreenNoteImage.image = image
+    } else {
+      self.fullScreenNoteImage.kf.setImage(with: URL(string: imageUrl!), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
     }
-    
-    @objc func hideImage() {
-        dismiss(animated: true, completion: nil)
-    }
+  }
+  
+  /** Function that dismissing full screen mode **/
+  
+  @objc func hideImage() {
+    dismiss(animated: true, completion: nil)
+  }
 }

@@ -8,135 +8,142 @@
 
 import UIKit
 import Firebase
-import FirebaseStorage
 
 class NewTaskViewControler: UIViewController {
+  @IBOutlet var slideMenu: UIView!
+  
+  @IBOutlet weak var timeTextField: UITextField!
+  @IBOutlet weak var dateTextField: UITextField!
+  @IBOutlet weak var noteNameTextField: UITextField!
+  @IBOutlet weak var descriptionTextField: UITextView!
+  @IBOutlet weak var attachedImageView: UIImageView!
+  @IBOutlet weak var imageNameLabel: UILabel!
+  @IBOutlet weak var imageSizeLabel: UILabel!
+  @IBOutlet weak var cancelImageButton: UIButton!
+  
+  let datePicker = UIDatePicker()
+  let timePicker = UIDatePicker()
+  var dateTime: String?
+  var attachedImage: UIImage?
+  
+  var user: User!
+  var ref: DatabaseReference!
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
     
-    @IBOutlet weak var timeTextField: UITextField!
-    @IBOutlet weak var dateTextField: UITextField!
-    let datePicker = UIDatePicker()
-    let timePicker = UIDatePicker()
-
-    @IBOutlet weak var noteNameTextField: UITextField!
-    @IBOutlet weak var descriptionTextField: UITextView!
-    @IBOutlet weak var attachingImageView: UIImageView!
-    @IBOutlet weak var imageNameLabel: UILabel!
-    @IBOutlet weak var imageSizeLabel: UILabel!
-    @IBOutlet weak var cancelImageButton: UIButton!
+    dateTextField.inputView = datePicker
+    datePicker.datePickerMode = .date
+    timeTextField.inputView = timePicker
+    timePicker.datePickerMode = .time
     
-    @IBOutlet var slideMenu: UIView!
+    datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+    timePicker.addTarget(self, action: #selector(timeChanged), for: .valueChanged)
     
-    var user: User!
-    var ref: DatabaseReference!
+    user = Auth.auth().currentUser
+    ref = Database.database().reference()
     
-    var dateTime: String?
-    
-    var attachPhotoUrl: UIImage?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        dateTextField.inputView = datePicker
-        datePicker.datePickerMode = .date
-        timeTextField.inputView = timePicker
-        timePicker.datePickerMode = .time
-        
-        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
-        timePicker.addTarget(self, action: #selector(timeChanged), for: .valueChanged)
-        
-        user = Auth.auth().currentUser
-        ref = Database.database().reference()
-        
-        let tapToHideMenu = UITapGestureRecognizer(target: self, action: #selector(touchWasDetected(_:)))
-        self.view.addGestureRecognizer(tapToHideMenu)
+    let tapToHideBoard = UITapGestureRecognizer(target: self, action: #selector(tapWasDetected(_:)))
+    self.view.addGestureRecognizer(tapToHideBoard)
+  }
+  
+  /** Action Handler for left swipe gesture that hide slide menu **/
+  
+  @IBAction func swipeToHideMenu(_ sender: UISwipeGestureRecognizer) {
+    dismiss(animated: true, completion: nil)
+  }
+  
+  /** Action Handler for attachedImageButton **/
+  
+  @IBAction func didTapAttachImage(_ sender: UIButton) {
+    let picker = UIImagePickerController()
+    picker.delegate = self
+    picker.allowsEditing = true
+    present(picker, animated: true, completion: nil)
+  }
+  
+  /** Action for deleting attached image view **/
+  
+  @IBAction func didTapDeleteAttachedImage (_ sender: UIButton) {
+    attachedImage = nil
+    attachedImageView.image = nil
+    imageNameLabel.text = nil
+    imageSizeLabel.text = nil
+    cancelImageButton.isHidden = true
+  }
+  
+  /** Action Handler for addImageButton **/
+  
+  @IBAction func didTapAddItem(_ sender: UIButton) {
+    if (noteNameTextField.text!.isEmpty) {
+      return
+    }
+    if (!dateTextField.text!.isEmpty){
+      dateTime = dateTextField.text! + " " + timeTextField.text!
     }
     
-    @IBAction func swipeGestureDetected(_ sender: UISwipeGestureRecognizer) {
-        dismiss(animated: true, completion: nil)
-    }
+    let address = NSUUID().uuidString
+    let storageRef = Storage.storage().reference().child("note_attach_image").child("\(address).png")
+    var noteItem: Item?
     
-    @IBAction func didTapAttachPhoto(_ sender: UIButton) {
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        picker.allowsEditing = true
-        present(picker, animated: true, completion: nil)
-    }
-    
-    @IBAction func didTapDeleteAttachedPhoto (_ sender: UIButton) {
-        attachPhotoUrl = nil
-        attachingImageView.image = nil
-        imageNameLabel.text = nil
-        imageSizeLabel.text = nil
-        cancelImageButton.isHidden = true
-    }
-    
-    @IBAction func didTapAddItem(_ sender: UIButton) {
-        if (noteNameTextField.text!.isEmpty) {
+    if let uploadData = self.attachedImage?.pngData() {
+      storageRef.putData(uploadData, metadata: nil, completion: { (_, err) in
+        
+        storageRef.downloadURL(completion: { (url, err) in
+          if let err = err {
+            print(err)
             return
-        }
-        if (!dateTextField.text!.isEmpty){
-            dateTime = dateTextField.text! + " " + timeTextField.text!
-        }
-        
-        let address = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("note_attach_image").child("\(address).png")
-        var noteItem: Item?
-        
-        if let uploadData = self.attachPhotoUrl?.pngData() {
-            storageRef.putData(uploadData, metadata: nil, completion: { (_, err) in
-                
-                storageRef.downloadURL(completion: { (url, err) in
-                    if let err = err {
-                        print(err)
-                        return
-                    }
-                    
-                    guard let url = url else { return }
-                    
-                    noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: url.absoluteString, attachPhotoName: address)
-                    self.addNote(noteItem: noteItem!)
-
-                })
-            })
-        } else {
-            noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachPhotoUrl: nil, attachPhotoName: nil)
-            self.addNote(noteItem: noteItem!)
-         }
-        
-        self.dismiss(animated: true, completion: nil)
+          }
+          guard let url = url else { return }
+          
+          noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachedImageUrl: url.absoluteString, attachedImageUid: address)
+          self.upload(note: noteItem!)
+        })
+      })
+    } else {
+      noteItem = Item(name: self.noteNameTextField.text, noteDescription: self.descriptionTextField.text, dateTime: self.dateTime, attachedImageUrl: nil, attachedImageUid: nil)
+      self.upload(note: noteItem!)
     }
+    self.dismiss(animated: true, completion: nil)
+  }
+  
+  /** Function that uploading image into Firebase database **/
+  
+  func upload(note item: Item) {
+    let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
+    noteRef.setValue(item.toAnyObject())
+  }
+  
+  /** Function that dismiss some board while user interact with view **/
+  
+  @objc func tapWasDetected(_ sender: UITapGestureRecognizer) {
+    view.endEditing(true)
+  }
+  
+  @objc func dateChanged(){
+    getFormatFromPicker(with: "date")
+  }
+  
+  @objc func timeChanged(){
+    getFormatFromPicker(with: "time")
+  }
+  
+  /** Function that take date format depending on the field **/
+  
+  func getFormatFromPicker(with format: String){
+    let formatter = DateFormatter()
     
-    func addNote(noteItem: Item) {
-        let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
-        noteRef.setValue(noteItem.toAnyObject())
+    switch format {
+    case "date":
+      formatter.dateFormat = "dd-MMM-yyyy"
+      dateTextField.text = formatter.string(from: datePicker.date)
+      
+    case "time":
+      formatter.dateFormat = "hh:mm a"
+      timeTextField.text = formatter.string(from: timePicker.date)
+      
+    default:
+      return
     }
-    
-    @objc func touchWasDetected(_ sender: UITapGestureRecognizer) {
-        view.endEditing(true)
-    }
-    
-    @objc func dateChanged(){
-        getFormateFromPicker(format: "date")
-    }
-    
-    @objc func timeChanged(){
-        getFormateFromPicker(format: "time")
-    }
-    
-    func getFormateFromPicker(format: String){
-        let formatter = DateFormatter()
-        
-        switch format {
-        case "date":
-            formatter.dateFormat = "dd-MMM-yyyy"
-            dateTextField.text = formatter.string(from: datePicker.date)
-            
-        case "time":
-            formatter.dateFormat = "hh:mm a"
-            timeTextField.text = formatter.string(from: timePicker.date)
-            
-        default:
-            return
-        }
-    }
+  }
 }

@@ -9,8 +9,6 @@
 import UIKit
 
 class TableViewNoteCell: UITableViewCell {
-    
-    @IBOutlet weak var noteNameLabel: UILabel!
-    @IBOutlet weak var noteDateTimeLabel: UILabel!
-    
+  @IBOutlet weak var noteNameLabel: UILabel!
+  @IBOutlet weak var noteDateTimeLabel: UILabel!
 }
