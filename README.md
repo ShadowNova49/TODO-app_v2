@@ -16,4 +16,4 @@ ToDo app is a simple swift application to save Your daily tasks in order not to 
 ### Technologies used:
 * Swift 4.2
 * Kingfisher
-* Firebase
+* Firebase (Realtime Database + Storage)
