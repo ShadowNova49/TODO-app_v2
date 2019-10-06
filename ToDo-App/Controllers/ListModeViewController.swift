@@ -9,11 +9,13 @@
 import UIKit
 import Firebase
 import ChameleonFramework
+import SideMenu
 
 class ListModeViewController: UIViewController {
   @IBOutlet weak var undoneTasksTableView: UITableView!
   
-  let transition = Slider()
+  //let transition = Slider()
+  let sideMenuManager = SideMenuManager()
   var addNewNoteButton = UIButton()
   var doneTasksButton = UIButton()
   
@@ -28,7 +30,7 @@ class ListModeViewController: UIViewController {
     
     self.addNewNoteButton = UIButton(type: .custom)
     self.addNewNoteButton.setTitleColor(.blue, for: .normal)
-    self.addNewNoteButton.addTarget(self, action: #selector(addNewNoteButtonClick(_:)), for: .touchUpInside)
+    //self.addNewNoteButton.addTarget(self, action: #selector(addNewNoteButtonClick(_:)), for: .touchUpInside)
     self.view.addSubview(addNewNoteButton)
     
     self.doneTasksButton = UIButton(type: .custom)
@@ -39,6 +41,15 @@ class ListModeViewController: UIViewController {
     user = Auth.auth().currentUser
     ref = Database.database().reference()
     startObservingDatabase()
+    
+    
+    sideMenuManager.menuRightNavigationController = storyboard!.instantiateViewController(withIdentifier: "MenuRightNavigationController") as? UISideMenuNavigationController
+    //sideMenuManager.menuAddPanGestureToPresent(toView: self.addNewNoteButton)
+    sideMenuManager.menuAddScreenEdgePanGesturesToPresent(toView: self.view)
+    sideMenuManager.menuPresentMode = .menuSlideIn
+    sideMenuManager.menuFadeStatusBar = false
+    sideMenuManager.menuShadowOpacity = 0.3
+    sideMenuManager.menuShadowRadius = 3
   }
   
   override func viewWillLayoutSubviews() {
@@ -48,12 +59,9 @@ class ListModeViewController: UIViewController {
   
   /** Action Handler for addNewNoteButton **/
   
-  @IBAction func addNewNoteButtonClick(_ sender: UIButton) {
-    guard let newTaskViewController = storyboard?.instantiateViewController(withIdentifier: "NewTaskViewController") as? NewTaskViewControler else { return }
-    newTaskViewController.modalPresentationStyle = .overCurrentContext
-    newTaskViewController.transitioningDelegate = self
-    present(newTaskViewController, animated: true)
-  }
+//  @IBAction func addNewNoteButtonClick(_ sender: UIButton) {
+//    self.performSegue(withIdentifier: "MenuRightNavigationController", sender: nil)
+//  }
   
   /** Action Handler for doneTasksButton **/
   
@@ -196,13 +204,15 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
       let item = self.undoneTasks[indexPath.row]
       item.ref?.removeValue()
       
-      let imageRef = Storage.storage().reference().child("note_attach_image").child("\(item.attachedImageUid!).png")
-      imageRef.delete {
-        error in
-        if let error = error {
-          print(error)
-        } else {
-          print("File deleted successfully")
+      if let imageName = item.attachedImageUid {
+        let imageRef = Storage.storage().reference().child("note_attach_image").child("\(imageName).png")
+        imageRef.delete {
+          error in
+          if let error = error {
+            print(error)
+          } else {
+            print("File deleted successfully")
+          }
         }
       }
     }
@@ -242,14 +252,14 @@ extension ListModeViewController: UITableViewDataSource {
 
 // MARK: - UIViewControllerTransitioningDelegate
 
-extension ListModeViewController: UIViewControllerTransitioningDelegate {
-  func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    transition.isPresenting = true
-    return transition
-  }
-  
-  func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    transition.isPresenting = false
-    return transition
-  }
-}
+//extension ListModeViewController: UIViewControllerTransitioningDelegate {
+//  func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//    transition.isPresenting = true
+//    return transition
+//  }
+//  
+//  func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//    transition.isPresenting = false
+//    return transition
+//  }
+//}
