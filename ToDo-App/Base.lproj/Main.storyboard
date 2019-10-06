@@ -269,13 +269,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jMC-bJ-gd6">
-                                                    <rect key="frame" x="15" y="11" width="42" height="23"/>
+                                                    <rect key="frame" x="15" y="11" width="48" height="23"/>
                                                     <fontDescription key="fontDescription" name="Baloo" family="Baloo" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VyR-lq-szd">
-                                                    <rect key="frame" x="318" y="11" width="42" height="23"/>
+                                                    <rect key="frame" x="318" y="11" width="48" height="23"/>
                                                     <fontDescription key="fontDescription" name="Baloo" family="Baloo" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -338,7 +338,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cRn-dB-T64" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4607" y="-530"/>
+            <point key="canvasLocation" x="4605.7971014492759" y="-530.35714285714289"/>
         </scene>
         <!--Task Details View Controller-->
         <scene sceneID="eXx-Z3-JzC">
@@ -677,13 +677,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fji-gl-H61">
-                                                    <rect key="frame" x="15" y="11" width="42" height="23"/>
+                                                    <rect key="frame" x="15" y="11" width="46" height="23"/>
                                                     <fontDescription key="fontDescription" name="Baloo" family="Baloo" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gh7-Ld-hqB">
-                                                    <rect key="frame" x="318" y="11" width="42" height="23"/>
+                                                    <rect key="frame" x="313" y="11" width="47" height="23"/>
                                                     <fontDescription key="fontDescription" name="Baloo" family="Baloo" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -739,7 +739,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7NT-wr-k7D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3777" y="258"/>
+            <point key="canvasLocation" x="3776.811594202899" y="257.8125"/>
         </scene>
         <!--Gallery View Controller-->
         <scene sceneID="Zt7-ty-fG6">
