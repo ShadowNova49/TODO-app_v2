@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import ChameleonFramework
 
 class ListModeViewController: UIViewController {
   @IBOutlet weak var undoneTasksTableView: UITableView!
@@ -83,16 +84,17 @@ class ListModeViewController: UIViewController {
   
   func setupDoneTasksButton() {
     doneTasksButton.layer.cornerRadius = doneTasksButton.layer.frame.size.width/2
-    doneTasksButton.backgroundColor = .lightGray
+    doneTasksButton.backgroundColor = .flatMint
     doneTasksButton.clipsToBounds = true
-    doneTasksButton.setTitle("√", for: .normal)
+    doneTasksButton.setTitle("⩗", for: .normal)
+    doneTasksButton.setTitleColor(.white, for: .normal)
     //doneTasksButton.setBackgroundImage(UIImage(named: "icon0"), for: .normal)
     doneTasksButton.contentMode = .scaleAspectFit
     doneTasksButton.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       //doneTasksButton.trailingAnchor.constraint(equalTo: addNewNoteButton.trailingAnchor, constant: 50),
       doneTasksButton.leadingAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.leadingAnchor, constant: undoneTasksTableView.frame.width/2 - 60),
-      doneTasksButton.bottomAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+      doneTasksButton.bottomAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
       doneTasksButton.widthAnchor.constraint(equalToConstant: 50), doneTasksButton.heightAnchor.constraint(equalToConstant: 50)])
   }
   
@@ -100,15 +102,16 @@ class ListModeViewController: UIViewController {
   
   func setupAddNewNoteButton() {
     addNewNoteButton.layer.cornerRadius = addNewNoteButton.layer.frame.size.width/2
-    addNewNoteButton.backgroundColor = .lightGray
+    addNewNoteButton.backgroundColor = .flatMint
     addNewNoteButton.clipsToBounds = true
     addNewNoteButton.setTitle("+", for: .normal)
+    addNewNoteButton.setTitleColor(.white, for: .normal)
     //addNewNoteButton(UIImage(named:"your-image"), for: .normal)
     addNewNoteButton.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       //addNewNoteButton.trailingAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.trailingAnchor, constant: -(undoneTasksTableView.frame.width/2 - 85)),
       addNewNoteButton.leadingAnchor.constraint(equalTo: doneTasksButton.leadingAnchor, constant: 70),
-      addNewNoteButton.bottomAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+      addNewNoteButton.bottomAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
       addNewNoteButton.widthAnchor.constraint(equalToConstant: 50), addNewNoteButton.heightAnchor.constraint(equalToConstant: 50)])
   }
   
@@ -203,19 +206,19 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
         }
       }
     }
-    action.backgroundColor = .red
+    action.backgroundColor = .flatRed
 
     return UISwipeActionsConfiguration(actions: [action])
   }
   
   func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let action = UIContextualAction(style: .destructive, title: "Check") { (action, view, completion) in
+    let action = UIContextualAction(style: .destructive, title: "✔") { (action, view, completion) in
       // TODO: Mark todo like done
       let item = self.undoneTasks[indexPath.row]
       let post = [ "isDone": true ]
       item.ref!.updateChildValues(post as [AnyHashable : Any])
     }
-    action.backgroundColor = .green
+    action.backgroundColor = .flatGreen
     
     return UISwipeActionsConfiguration(actions: [action])
   }

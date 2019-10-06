@@ -11,7 +11,9 @@ target 'ToDo-App' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
-  pod 'Kingfisher', '~> 4.10.0' 
+  pod 'Kingfisher', '~> 4.10.0'
+  pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git'
+  pod 'TextFieldEffects', '~> 1.5.1'
   
   # Pods for ToDo-App
 
