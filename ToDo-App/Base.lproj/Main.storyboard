@@ -865,6 +865,7 @@
                         <userDefinedRuntimeAttribute type="number" keyPath="menuWidth">
                             <real key="value" value="0.0"/>
                         </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="sideMenuManager.menuFadeStatusBar" value="NO"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="9VT-vS-TbS" kind="relationship" relationship="rootViewController" id="NmT-sG-mYY"/>

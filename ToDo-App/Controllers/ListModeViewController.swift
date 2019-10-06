@@ -13,8 +13,7 @@ import SideMenu
 
 class ListModeViewController: UIViewController {
   @IBOutlet weak var undoneTasksTableView: UITableView!
-  
-  //let transition = Slider()
+
   let sideMenuManager = SideMenuManager()
   var addNewNoteButton = UIButton()
   var doneTasksButton = UIButton()
@@ -30,7 +29,7 @@ class ListModeViewController: UIViewController {
     
     self.addNewNoteButton = UIButton(type: .custom)
     self.addNewNoteButton.setTitleColor(.blue, for: .normal)
-    //self.addNewNoteButton.addTarget(self, action: #selector(addNewNoteButtonClick(_:)), for: .touchUpInside)
+    self.addNewNoteButton.addTarget(self, action: #selector(addNewNoteButtonClick(_:)), for: .touchUpInside)
     self.view.addSubview(addNewNoteButton)
     
     self.doneTasksButton = UIButton(type: .custom)
@@ -38,18 +37,11 @@ class ListModeViewController: UIViewController {
     self.doneTasksButton.addTarget(self, action: #selector(doneTasksButtonClick(_:)), for: .touchUpInside)
     self.view.addSubview(doneTasksButton)
     
+    //setupSideMenu()
+    
     user = Auth.auth().currentUser
     ref = Database.database().reference()
     startObservingDatabase()
-    
-    
-    sideMenuManager.menuRightNavigationController = storyboard!.instantiateViewController(withIdentifier: "MenuRightNavigationController") as? UISideMenuNavigationController
-    //sideMenuManager.menuAddPanGestureToPresent(toView: self.addNewNoteButton)
-    sideMenuManager.menuAddScreenEdgePanGesturesToPresent(toView: self.view)
-    sideMenuManager.menuPresentMode = .menuSlideIn
-    sideMenuManager.menuFadeStatusBar = false
-    sideMenuManager.menuShadowOpacity = 0.3
-    sideMenuManager.menuShadowRadius = 3
   }
   
   override func viewWillLayoutSubviews() {
@@ -59,9 +51,11 @@ class ListModeViewController: UIViewController {
   
   /** Action Handler for addNewNoteButton **/
   
-//  @IBAction func addNewNoteButtonClick(_ sender: UIButton) {
-//    self.performSegue(withIdentifier: "MenuRightNavigationController", sender: nil)
-//  }
+  @IBAction func addNewNoteButtonClick(_ sender: UIButton) {
+    //let sideMenu = storyboard!.instantiateViewController(withIdentifier: "MenuRightNavigationController") as! UISideMenuNavigationController
+    //self.present(sideMenu, animated: true, completion: nil)
+    self.performSegue(withIdentifier: "MenuRightNavigationController", sender: nil)
+  }
   
   /** Action Handler for doneTasksButton **/
   
@@ -122,6 +116,17 @@ class ListModeViewController: UIViewController {
       addNewNoteButton.bottomAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
       addNewNoteButton.widthAnchor.constraint(equalToConstant: 50), addNewNoteButton.heightAnchor.constraint(equalToConstant: 50)])
   }
+  
+  /** SideMenu setup **/
+  
+//  func setupSideMenu {
+//    sideMenuManager.menuRightNavigationController = storyboard!.instantiateViewController(withIdentifier: "MenuRightNavigationController") as? UISideMenuNavigationController
+//    sideMenuManager.menuAddScreenEdgePanGesturesToPresent(toView: self.view)
+//    sideMenuManager.menuPresentMode = .menuSlideIn
+//    sideMenuManager.menuFadeStatusBar = false
+//    sideMenuManager.menuShadowOpacity = 0.3
+//    sideMenuManager.menuShadowRadius = 3
+//  }
   
   /** Function that receives a snapshot that contains the data at the specified location in the
    database at the time of the event in its value property. In this case th list of undoneTasks **/
