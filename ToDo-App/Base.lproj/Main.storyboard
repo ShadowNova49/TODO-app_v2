@@ -235,7 +235,6 @@
                         <outlet property="imageNameLabel" destination="ABg-C7-tdz" id="YTB-Vi-zmN"/>
                         <outlet property="imageSizeLabel" destination="ihA-nc-Ilw" id="FjA-8M-HMv"/>
                         <outlet property="noteNameTextField" destination="TYe-OO-DKy" id="Z7T-kr-x1B"/>
-                        <outlet property="slideMenu" destination="AJs-Wy-ONZ" id="J8d-5j-0jv"/>
                         <outlet property="timeTextField" destination="TME-fw-4k9" id="w26-UG-wsl"/>
                     </connections>
                 </viewController>
@@ -249,7 +248,7 @@
             </objects>
             <point key="canvasLocation" x="3776.811594202899" y="-530.35714285714289"/>
         </scene>
-        <!--Done Tasks View Controller-->
+        <!--Done Tasks-->
         <scene sceneID="mZX-6n-Npg">
             <objects>
                 <viewController storyboardIdentifier="DoneTasksViewController" id="nd2-WB-o6y" customClass="DoneTasksViewController" customModule="ToDo_App" customModuleProvider="target" sceneMemberID="viewController">
@@ -301,44 +300,32 @@
                                     <outlet property="delegate" destination="nd2-WB-o6y" id="Y6L-Dd-Ksp"/>
                                 </connections>
                             </tableView>
-                            <navigationBar clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="xWT-6E-nLA">
-                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                                <color key="barTintColor" red="0.1819814891" green="0.69426733259999995" blue="0.53024792669999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" name="Baloo" family="Baloo" pointSize="21"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="Done Tasks" id="pfl-aa-wyL">
-                                        <barButtonItem key="leftBarButtonItem" title="Back" style="done" id="IdA-vx-KUA">
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <connections>
-                                                <action selector="dismissView:" destination="cRn-dB-T64" id="BuV-DJ-gA1"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="xWT-6E-nLA" firstAttribute="leading" secondItem="TbJ-of-xcH" secondAttribute="leading" id="Awj-fA-Fcf"/>
-                            <constraint firstItem="TbJ-of-xcH" firstAttribute="top" secondItem="xWT-6E-nLA" secondAttribute="bottom" id="G3w-dV-qnF"/>
-                            <constraint firstItem="xWT-6E-nLA" firstAttribute="leading" secondItem="w6U-Kd-Imj" secondAttribute="leading" id="Mpy-Yc-3St"/>
-                            <constraint firstAttribute="trailing" secondItem="xWT-6E-nLA" secondAttribute="trailing" id="NCu-qF-GCK"/>
+                            <constraint firstItem="TbJ-of-xcH" firstAttribute="trailing" secondItem="BjY-Fm-jbf" secondAttribute="trailing" id="8oJ-9s-mdD"/>
+                            <constraint firstItem="TbJ-of-xcH" firstAttribute="top" secondItem="BjY-Fm-jbf" secondAttribute="top" id="Ge5-Fe-JGP"/>
                             <constraint firstItem="TbJ-of-xcH" firstAttribute="bottom" secondItem="BjY-Fm-jbf" secondAttribute="bottom" id="XB3-ZZ-fre"/>
-                            <constraint firstItem="xWT-6E-nLA" firstAttribute="trailing" secondItem="TbJ-of-xcH" secondAttribute="trailing" id="rYQ-Fn-Mcf"/>
-                            <constraint firstItem="xWT-6E-nLA" firstAttribute="top" secondItem="BjY-Fm-jbf" secondAttribute="top" id="vH6-0f-t9C"/>
+                            <constraint firstItem="TbJ-of-xcH" firstAttribute="bottom" secondItem="BjY-Fm-jbf" secondAttribute="bottom" id="kXf-sk-2Zv"/>
+                            <constraint firstItem="TbJ-of-xcH" firstAttribute="leading" secondItem="BjY-Fm-jbf" secondAttribute="leading" id="yem-oF-5D9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="BjY-Fm-jbf"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Done Tasks" id="amf-VW-ILk">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="8ZK-X0-udn">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="dismissView:" destination="nd2-WB-o6y" id="Pdh-HE-g2R"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="doneTasksTableView" destination="TbJ-of-xcH" id="owO-eX-x7U"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cRn-dB-T64" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4605.7971014492759" y="-530.35714285714289"/>
+            <point key="canvasLocation" x="5516" y="-530"/>
         </scene>
         <!--Task Details View Controller-->
         <scene sceneID="eXx-Z3-JzC">
@@ -735,6 +722,7 @@
                     <connections>
                         <outlet property="undoneTasksTableView" destination="kCu-Tg-0mL" id="SbR-f9-VSx"/>
                         <segue destination="Oa1-Y1-1wz" kind="presentation" identifier="SignOut" id="lXP-1S-Qwn"/>
+                        <segue destination="jE0-Bh-FsD" kind="showDetail" identifier="DoneTasksNavigationController" id="nq1-b3-NLg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7NT-wr-k7D" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -825,6 +813,7 @@
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hYU-Ss-6dx">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <gestureRecognizers/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -847,6 +836,29 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j9o-Od-mxB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4607" y="1027"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Eba-Z1-ejX">
+            <objects>
+                <navigationController storyboardIdentifier="DoneTasksNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="jE0-Bh-FsD" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="AMI-NK-brL">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.1819814891" green="0.69426733259999995" blue="0.53024792669999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="23"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="nd2-WB-o6y" kind="relationship" relationship="rootViewController" id="qsg-ff-cic"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WD5-ir-HJN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4606" y="-530"/>
         </scene>
     </scenes>
     <resources>

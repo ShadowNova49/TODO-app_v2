@@ -10,8 +10,6 @@ import UIKit
 import Firebase
 
 class NewTaskViewControler: UIViewController {
-  @IBOutlet var slideMenu: UIView!
-  
   @IBOutlet weak var timeTextField: UITextField!
   @IBOutlet weak var dateTextField: UITextField!
   @IBOutlet weak var noteNameTextField: UITextField!

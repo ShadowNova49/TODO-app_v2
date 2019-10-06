@@ -16,8 +16,11 @@ class FullScreenImageViewController: UIViewController {
       fullScreenNoteImage.contentMode = .scaleAspectFit
       fullScreenNoteImage.isUserInteractionEnabled = true
       
-      let hideGesture = UITapGestureRecognizer.init(target: self, action: #selector(self.hideImage))
+      let hideGesture = UIPanGestureRecognizer.init(target: self, action: #selector(self.hideImage))
       fullScreenNoteImage.addGestureRecognizer(hideGesture)
+      
+      let pinchGesture = UIPinchGestureRecognizer.init(target: self, action: #selector(self.pinchGesture(sender:)))
+      fullScreenNoteImage.addGestureRecognizer(pinchGesture)
     }
   }
   
@@ -31,6 +34,17 @@ class FullScreenImageViewController: UIViewController {
       self.fullScreenNoteImage.image = image
     } else {
       self.fullScreenNoteImage.kf.setImage(with: URL(string: imageUrl!), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
+    }
+  }
+  
+  /** Function that handle pinch gesture **/
+  
+  @objc func pinchGesture(sender: UIPinchGestureRecognizer) {
+    guard sender.view != nil else { return }
+    
+    if sender.state == .began || sender.state == .changed {
+      sender.view?.transform = (sender.view?.transform.scaledBy(x: sender.scale, y: sender.scale))!
+      sender.scale = 1.0
     }
   }
   

@@ -58,9 +58,10 @@ class ListModeViewController: UIViewController {
   /** Action Handler for doneTasksButton **/
   
   @IBAction func doneTasksButtonClick(_ sender: UIButton) {
-    guard let doneTasksViewController = storyboard?.instantiateViewController(withIdentifier: "DoneTasksViewController") as? DoneTasksViewController else { return }
-    doneTasksViewController.modalPresentationStyle = .pageSheet
-    present(doneTasksViewController, animated: true)
+    performSegue(withIdentifier: "DoneTasksNavigationController", sender: nil)
+//    guard let doneTasksViewController = storyboard?.instantiateViewController(withIdentifier: "DoneTasksNavigationController") as? DoneTasksViewController else { return }
+//    doneTasksViewController.modalPresentationStyle = .pageSheet
+//    present(doneTasksViewController, animated: true)
   }
   
   /** Action Handler for signOutButton **/

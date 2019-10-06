@@ -49,9 +49,7 @@ class DoneTasksViewController: UIViewController {
     ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
     print("reference has been removed")
   }
-  
-  /** Function that help to dismiss keyboard while user interact with view **/
-  
+
   @IBAction func dismissView (_ sender: UIBarButtonItem){
     dismiss(animated: true, completion: nil)
   }
