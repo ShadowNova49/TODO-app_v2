@@ -18,7 +18,6 @@ class FullScreenImageViewController: UIViewController {
       
       let hideGesture = UIPanGestureRecognizer.init(target: self, action: #selector(self.hideImage))
       fullScreenNoteImage.addGestureRecognizer(hideGesture)
-      
       let pinchGesture = UIPinchGestureRecognizer.init(target: self, action: #selector(self.pinchGesture(sender:)))
       fullScreenNoteImage.addGestureRecognizer(pinchGesture)
     }
@@ -37,7 +36,7 @@ class FullScreenImageViewController: UIViewController {
     }
   }
   
-  /** Function that handle pinch gesture **/
+  //MARK: - Function that handle pinch gesture
   
   @objc func pinchGesture(sender: UIPinchGestureRecognizer) {
     guard sender.view != nil else { return }
@@ -48,7 +47,7 @@ class FullScreenImageViewController: UIViewController {
     }
   }
   
-  /** Function that dismissing full screen mode **/
+  //MARK: - Function that dismissing full screen mode 
   
   @objc func hideImage() {
     dismiss(animated: true, completion: nil)

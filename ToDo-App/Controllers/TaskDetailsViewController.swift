@@ -41,7 +41,7 @@ class TaskDetailsViewController: UIViewController {
     }
   }
   
-  /** Function that perfom segue to full screen mode **/
+  //MARK: - Function that perfom segue to full screen mode 
   
   @objc func imageTap() {
     if self.noteAttachedImage.image != nil {
@@ -60,7 +60,7 @@ class TaskDetailsViewController: UIViewController {
     }
   }
   
-  /** Action Handler for doneButton **/
+  //MARK: - Action Handler for doneButton 
   
   @IBAction func doneButton(_ sender: UIButton) {
     if noteNameTextField.text != name || noteDescriptionTextField.text != noteDescription {

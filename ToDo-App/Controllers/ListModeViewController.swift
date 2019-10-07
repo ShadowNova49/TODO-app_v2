@@ -46,7 +46,7 @@ class ListModeViewController: UIViewController {
     self.setupDoneTasksButton()
   }
   
-  /** Action Handler for addNewNoteButton **/
+  //MARK: - Action Handler for addNewNoteButton
   
   @IBAction func addNewNoteButtonClick(_ sender: UIButton) {
     guard let newTaskViewController = storyboard?.instantiateViewController(withIdentifier: "NewTaskViewController") as? NewTaskViewControler else { return }
@@ -55,16 +55,13 @@ class ListModeViewController: UIViewController {
     present(newTaskViewController, animated: true)
   }
   
-  /** Action Handler for doneTasksButton **/
+  //MARK: - Action Handler for doneTasksButton
   
   @IBAction func doneTasksButtonClick(_ sender: UIButton) {
     performSegue(withIdentifier: "DoneTasksNavigationController", sender: nil)
-//    guard let doneTasksViewController = storyboard?.instantiateViewController(withIdentifier: "DoneTasksNavigationController") as? DoneTasksViewController else { return }
-//    doneTasksViewController.modalPresentationStyle = .pageSheet
-//    present(doneTasksViewController, animated: true)
   }
   
-  /** Action Handler for signOutButton **/
+  //MARK: - Action Handler for signOutButton
   
   @IBAction func didTapSignOut(_ sender: UIBarButtonItem) {
     do {
@@ -75,13 +72,13 @@ class ListModeViewController: UIViewController {
     }
   }
   
-  /** Function that help to dismiss keyboard while user interact with view **/
+  //MARK: - Function that help to dismiss keyboard while user interact with view
   
   @objc func touchWasDetected(_ sender: UITapGestureRecognizer) {
     view.endEditing(true)
   }
   
-  /** doneTasksButton layout setup method **/
+  //MARK: - doneTasksButton layout setup method
   
   func setupDoneTasksButton() {
     doneTasksButton.layer.cornerRadius = doneTasksButton.layer.frame.size.width/2
@@ -89,17 +86,16 @@ class ListModeViewController: UIViewController {
     doneTasksButton.clipsToBounds = true
     doneTasksButton.setTitle("⩗", for: .normal)
     doneTasksButton.setTitleColor(.white, for: .normal)
-    //doneTasksButton.setBackgroundImage(UIImage(named: "icon0"), for: .normal)
     doneTasksButton.contentMode = .scaleAspectFit
     doneTasksButton.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      //doneTasksButton.trailingAnchor.constraint(equalTo: addNewNoteButton.trailingAnchor, constant: 50),
       doneTasksButton.leadingAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.leadingAnchor, constant: undoneTasksTableView.frame.width/2 - 60),
       doneTasksButton.bottomAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-      doneTasksButton.widthAnchor.constraint(equalToConstant: 50), doneTasksButton.heightAnchor.constraint(equalToConstant: 50)])
+      doneTasksButton.widthAnchor.constraint(equalToConstant: 50),
+      doneTasksButton.heightAnchor.constraint(equalToConstant: 50)])
   }
   
-  /** addNewNoteButton layout setup method **/
+  //MARK: - addNewNoteButton layout setup method
   
   func setupAddNewNoteButton() {
     addNewNoteButton.layer.cornerRadius = addNewNoteButton.layer.frame.size.width/2
@@ -107,17 +103,16 @@ class ListModeViewController: UIViewController {
     addNewNoteButton.clipsToBounds = true
     addNewNoteButton.setTitle("+", for: .normal)
     addNewNoteButton.setTitleColor(.white, for: .normal)
-    //addNewNoteButton(UIImage(named:"your-image"), for: .normal)
     addNewNoteButton.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      //addNewNoteButton.trailingAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.trailingAnchor, constant: -(undoneTasksTableView.frame.width/2 - 85)),
       addNewNoteButton.leadingAnchor.constraint(equalTo: doneTasksButton.leadingAnchor, constant: 70),
       addNewNoteButton.bottomAnchor.constraint(equalTo: undoneTasksTableView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-      addNewNoteButton.widthAnchor.constraint(equalToConstant: 50), addNewNoteButton.heightAnchor.constraint(equalToConstant: 50)])
+      addNewNoteButton.widthAnchor.constraint(equalToConstant: 50),
+      addNewNoteButton.heightAnchor.constraint(equalToConstant: 50)])
   }
   
-  /** Function that receives a snapshot that contains the data at the specified location in the
-   database at the time of the event in its value property. In this case th list of undoneTasks **/
+  //MARK: - Function that receives a snapshot that contains the data at the specified location in the database
+  //at the time of the event in its value property. In this case this is the list of undone tasks
   
   func startObservingDatabase () {
     databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
@@ -153,7 +148,8 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
     popover.popoverPresentationController?.sourceView = selectedCellSourceView
     popover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
     popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y - 200, width: 0, height: 0)
-    //popover.preferredContentSize = CGSize(width: 320, height: 420)
+    
+    //TODO: - make const
     
     if let name = self.undoneTasks[indexPath.row].name {
       popover.name = name
@@ -193,7 +189,7 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
   
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-      // TODO: Delete todo
+      // Delete todo
       let item = self.undoneTasks[indexPath.row]
       item.ref?.removeValue()
       
@@ -214,12 +210,12 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
   
   func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let action = UIContextualAction(style: .destructive, title: "✔") { (action, view, completion) in
-      // TODO: Mark todo like done
+      // Mark todo like done
       let item = self.undoneTasks[indexPath.row]
       let post = [ "isDone": true ]
       item.ref!.updateChildValues(post as [AnyHashable : Any])
     }
-    action.backgroundColor = .flatGreen
+    action.backgroundColor = .flatMint
     
     return UISwipeActionsConfiguration(actions: [action])
   }
@@ -233,7 +229,8 @@ extension ListModeViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as! TableViewNoteCell
+    let reusebleIdentifier = "NoteCell"
+    let cell = tableView.dequeueReusableCell(withIdentifier: reusebleIdentifier, for: indexPath) as! TableViewNoteCell
     let item = self.undoneTasks[indexPath.row]
     cell.noteNameLabel.text = item.name
     cell.noteDateTimeLabel.text = item.dateTime

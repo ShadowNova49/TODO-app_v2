@@ -45,13 +45,13 @@ class NewTaskViewControler: UIViewController {
     self.view.addGestureRecognizer(tapToHideBoard)
   }
   
-  /** Action Handler for left swipe gesture that hide slide menu **/
+  //MARK: - Action Handler for left swipe gesture that hide slide menu
   
   @IBAction func swipeToHideMenu(_ sender: UISwipeGestureRecognizer) {
     dismiss(animated: true, completion: nil)
   }
   
-  /** Action Handler for attachedImageButton **/
+  //MARK: - Action Handler for attachedImageButton
   
   @IBAction func didTapAttachImage(_ sender: UIButton) {
     let picker = UIImagePickerController()
@@ -60,7 +60,7 @@ class NewTaskViewControler: UIViewController {
     present(picker, animated: true, completion: nil)
   }
   
-  /** Action for deleting attached image view **/
+  //MARK: - Action for deleting attached image view
   
   @IBAction func didTapDeleteAttachedImage (_ sender: UIButton) {
     attachedImage = nil
@@ -70,7 +70,7 @@ class NewTaskViewControler: UIViewController {
     cancelImageButton.isHidden = true
   }
   
-  /** Action Handler for addImageButton **/
+  //MARK: - Action Handler for addImageButton
   
   @IBAction func didTapAddItem(_ sender: UIButton) {
     if (noteNameTextField.text!.isEmpty) {
@@ -105,14 +105,14 @@ class NewTaskViewControler: UIViewController {
     self.dismiss(animated: true, completion: nil)
   }
   
-  /** Function that uploading image into Firebase database **/
+  //MARK: - Function that uploading image into Firebase database
   
   func upload(note item: Item) {
     let noteRef = self.ref.child("users").child(self.user.uid).child("notes").child(UUID().uuidString)
     noteRef.setValue(item.toAnyObject())
   }
   
-  /** Function that dismiss some board while user interact with view **/
+  //MARK: - Function that dismiss some board while user interact with view
   
   @objc func tapWasDetected(_ sender: UITapGestureRecognizer) {
     view.endEditing(true)
@@ -126,7 +126,7 @@ class NewTaskViewControler: UIViewController {
     getFormatFromPicker(with: "time")
   }
   
-  /** Function that take date format depending on the field **/
+  //MARK: - Function that take date format depending on the field
   
   func getFormatFromPicker(with format: String){
     let formatter = DateFormatter()

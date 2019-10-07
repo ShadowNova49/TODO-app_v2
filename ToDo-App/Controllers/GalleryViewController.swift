@@ -17,37 +17,34 @@ class GalleryViewController: UIViewController {
   var ref: DatabaseReference!
   private var databaseHandle: DatabaseHandle!
   
-  var itemsImageUrls: [String] = []
+  var itemsImageUrls: [Item] = []
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    //collectionView.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-    
     user = Auth.auth().currentUser
     ref = Database.database().reference()
-    imageFetcher()
+    startObservingDatabase()
   }
   
-  /** Function that receives a snapshot that contains the data at the specified location in the
-   database at the time of the event in its value property. In this case th list of imagesUrl **/
+  //MARK: - Function that receives a snapshot that contains the data at the specified location in the
+  //database at the time of the event in its value property. In this case th list of items with images 
   
-  func imageFetcher() {
+  func startObservingDatabase() {
     databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
-      var newItemsImageUrls: [String] = []
-      
+      var newItemsImageUrls: [Item] = []
+
       for itemSnapShot in snapshot.children {
         let item = Item(snapshot: itemSnapShot as! DataSnapshot)
         if item.attachedImageUrl != nil {
-          newItemsImageUrls.append(item.attachedImageUrl!)
+          newItemsImageUrls.append(item)
         }
       }
-      
       self.itemsImageUrls = newItemsImageUrls
       self.collectionView.reloadData()
     })
   }
-  
+
   deinit {
     ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
     print("reference has been removed")
@@ -62,8 +59,9 @@ extension GalleryViewController: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
-    cell.imageView.kf.setImage(with: URL(string: itemsImageUrls[indexPath.row]), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
+    let reusebleIdentifier = "ImageCell"
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusebleIdentifier, for: indexPath) as! ImageCollectionViewCell
+    cell.imageView.kf.setImage(with: URL(string: itemsImageUrls[indexPath.row].attachedImageUrl!), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
     return cell
   }
 }
@@ -79,7 +77,7 @@ extension GalleryViewController: UICollectionViewDelegate {
     if segue.identifier == "FromGalleryToGallery" {
       let viewController = segue.destination as! FullScreenImageViewController
       let indexPath = sender as? IndexPath
-      viewController.imageUrl = itemsImageUrls[indexPath!.row]
+      viewController.imageUrl = itemsImageUrls[indexPath!.row].attachedImageUrl!
     }
   }
 }
@@ -88,8 +86,10 @@ extension GalleryViewController: UICollectionViewDelegate {
 
 extension GalleryViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let width = collectionView.frame.width / 3 - 50 / 3
-    return CGSize(width: width, height: width)
+    let amount = CGFloat(3)
+    let spaceSummary = CGFloat(50)
+    let cellWidth = (collectionView.frame.width / amount) - (spaceSummary / amount)
+    return CGSize(width: cellWidth, height: cellWidth)
   }
   
   internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

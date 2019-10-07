@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Kingfisher
+import ChameleonFramework
 
 class DoneTasksViewController: UIViewController {
   @IBOutlet weak var doneTasksTableView: UITableView!
@@ -27,8 +28,8 @@ class DoneTasksViewController: UIViewController {
     startObservingDatabase()
   }
   
-  /** Function that receives a snapshot that contains the data at the specified location in the
-   database at the time of the event in its value property. In this case th list of doneTasks **/
+  //MARK: - Function that receives a snapshot that contains the data at the specified location in the
+  //database at the time of the event in its value property. In this case this is the list of done tasks 
   
   func startObservingDatabase () {
     databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
@@ -66,7 +67,6 @@ extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationCon
     popover.popoverPresentationController?.sourceView = selectedCellSourceView
     popover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0) // .up
     popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y - 200, width: 0, height: 0)
-    //popover.preferredContentSize = CGSize(width: 320, height: 420)
     
     if let name = self.doneTasks[indexPath.row].name {
       popover.name = name
@@ -106,7 +106,7 @@ extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationCon
   
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-      // TODO: Delete todo
+      //Delete todo
       let item = self.doneTasks[indexPath.row]
       item.ref?.removeValue()
       
@@ -121,18 +121,19 @@ extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationCon
         }
       }
     }
-    action.backgroundColor = .red
+    action.backgroundColor = .flatRed
     
     return UISwipeActionsConfiguration(actions: [action])
   }
   
   func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let action = UIContextualAction(style: .destructive, title: "Check") { (action, view, completion) in
+    let action = UIContextualAction(style: .destructive, title: "⩗") { (action, view, completion) in
+      //Mark todo like undone
       let item = self.doneTasks[indexPath.row]
       let post = [ "isDone": false ]
       item.ref!.updateChildValues(post as [AnyHashable : Any])
     }
-    action.backgroundColor = .green
+    action.backgroundColor = .flatMint
     
     return UISwipeActionsConfiguration(actions: [action])
   }
@@ -144,7 +145,8 @@ extension DoneTasksViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as! TableViewNoteCell
+    let reusebleIdentifier = "NoteCell"
+    let cell = tableView.dequeueReusableCell(withIdentifier: reusebleIdentifier, for: indexPath) as! TableViewNoteCell
     let item = self.doneTasks[indexPath.row]
     cell.noteNameLabel.text = item.name
     cell.noteDateTimeLabel.text = item.dateTime

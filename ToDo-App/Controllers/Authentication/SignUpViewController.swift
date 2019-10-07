@@ -13,7 +13,7 @@ class SignUpViewController: UIViewController {
   @IBOutlet weak var emailField: UITextField!
   @IBOutlet weak var passwordField: UITextField!
   
-  /** Action Handler for signUpButton **/
+  //MARK: - Action Handler for signUpButton
   
   @IBAction func didTapSignUp(_ sender: UIButton) {
     let email = emailField.text
@@ -36,7 +36,7 @@ class SignUpViewController: UIViewController {
     })
   }
   
-  /** Action Handler for backToLoginButton **/
+  //MARK: - Action Handler for backToLoginButton
   
   @IBAction func didTapBackToLogin(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {})
@@ -48,7 +48,7 @@ class SignUpViewController: UIViewController {
     self.present(alertController, animated: true, completion: nil)
   }
   
-  /** Function that perfom segue to main menu **/
+  //MARK: - Function that perfom segue to main menu 
   
   func signIn() {
     performSegue(withIdentifier: "SignInFromSignUp", sender: nil)

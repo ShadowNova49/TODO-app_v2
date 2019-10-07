@@ -21,7 +21,7 @@ class LoginViewController: UIViewController {
     }
   }
   
-  /** Action Handler for signInButton **/
+  //MARK: - Action Handler for signInButton
   
   @IBAction func didTapSignIn(_ sender: UIButton) {
     let email = emailField.text
@@ -49,7 +49,7 @@ class LoginViewController: UIViewController {
     })
   }
   
-  /** Action Handler for requestPasswordResetButton **/
+  //MARK: - Action Handler for requestPasswordResetButton
   
   @IBAction func didRequestPasswordReset(_ sender: UIButton) {
     let prompt = UIAlertController(title: "ToDo-App", message: "Email:", preferredStyle: .alert)
@@ -91,7 +91,7 @@ class LoginViewController: UIViewController {
     self.present(alertController, animated: true, completion: nil)
   }
   
-  /** Function that perfom segue to main menu **/
+  //MARK: - Function that perfom segue to main menu 
   
   func signIn() {
     performSegue(withIdentifier: "SignInFromLogin", sender: nil)

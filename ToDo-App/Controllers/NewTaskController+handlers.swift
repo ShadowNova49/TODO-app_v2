@@ -8,15 +8,12 @@
 
 import UIKit
 import Firebase
-//import Photos
 
 extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-    // Local variable inserted by Swift 4.2 migrator.
     let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
     
     var selectedImageFromPicker: UIImage?
-    //var selectedImageName: String?
     var selectedImageSize: String?
     
     if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
@@ -27,18 +24,11 @@ extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationCon
     
     if let imageData = selectedImageFromPicker!.pngData() {
       let bytes = imageData.count
-      let sizeInMb = Double(bytes) / pow(1024, 2) // Convert bytes to megabytes
-      selectedImageSize = "\(String(format: "%.2f", sizeInMb)) MB"
+      let bcf = ByteCountFormatter ()
+      bcf.allowedUnits = [.useMB]
+      bcf.countStyle = .file
+      selectedImageSize = bcf.string(fromByteCount: Int64(bytes))
     }
-    
-//     if let asset = info["UIImagePickerControllerPHAsset"] as? PHAsset {
-//      if let fileName = (asset.value(forKey: "filename")) as? String {
-//        selectedImageSize = fileName
-//      } else {
-//          selectedImageSize = generateNameForImage()
-//          print(selectedImageName)
-//        }
-//     }
     
     if let selectedImage = selectedImageFromPicker {
       attachedImage = selectedImage
