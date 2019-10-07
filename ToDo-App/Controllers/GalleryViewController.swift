@@ -47,7 +47,6 @@ class GalleryViewController: UIViewController {
 
   deinit {
     ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
-    print("reference has been removed")
   }
 }
 

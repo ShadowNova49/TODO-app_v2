@@ -48,7 +48,6 @@ class DoneTasksViewController: UIViewController {
   
   deinit {
     ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
-    print("reference has been removed")
   }
 
   @IBAction func dismissView (_ sender: UIBarButtonItem){
@@ -59,6 +58,7 @@ class DoneTasksViewController: UIViewController {
 extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationControllerDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let selectedCellSourceView = tableView.cellForRow(at: indexPath)
+    let yOffset = CGFloat(200)
     
     guard let popover = storyboard?.instantiateViewController(withIdentifier: "TaskDetailsViewController") as? TaskDetailsViewController else { return }
     popover.modalPresentationStyle = .popover
@@ -66,21 +66,22 @@ extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationCon
     popover.popoverPresentationController?.delegate = self
     popover.popoverPresentationController?.sourceView = selectedCellSourceView
     popover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0) // .up
-    popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y - 200, width: 0, height: 0)
+    popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y - yOffset, width: 0, height: 0)
     
-    if let name = self.doneTasks[indexPath.row].name {
+    let doneTasksArrayRef = self.doneTasks[indexPath.row]
+    if let name = doneTasksArrayRef.name {
       popover.name = name
     }
-    if let dateTime = self.doneTasks[indexPath.row].dateTime {
+    if let dateTime = doneTasksArrayRef.dateTime {
       popover.dateTime = dateTime
     }
-    if let description = self.doneTasks[indexPath.row].noteDescription {
+    if let description = doneTasksArrayRef.noteDescription {
       popover.noteDescription = description
     }
-    if let attachedImage = self.doneTasks[indexPath.row].attachedImageUrl {
+    if let attachedImage = doneTasksArrayRef.attachedImageUrl {
       popover.attachedImageUrl = attachedImage
     }
-    if let noteUrl = self.doneTasks[indexPath.row].ref {
+    if let noteUrl = doneTasksArrayRef.ref {
       popover.ref = noteUrl
     }
     

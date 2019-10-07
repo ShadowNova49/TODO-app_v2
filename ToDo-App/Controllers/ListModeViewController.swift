@@ -49,7 +49,8 @@ class ListModeViewController: UIViewController {
   //MARK: - Action Handler for addNewNoteButton
   
   @IBAction func addNewNoteButtonClick(_ sender: UIButton) {
-    guard let newTaskViewController = storyboard?.instantiateViewController(withIdentifier: "NewTaskViewController") as? NewTaskViewControler else { return }
+    guard let newTaskViewController = storyboard?.instantiateViewController(withIdentifier: "NewTaskViewController") as? NewTaskViewControler
+      else { return }
     newTaskViewController.modalPresentationStyle = .overCurrentContext
     newTaskViewController.transitioningDelegate = self
     present(newTaskViewController, animated: true)
@@ -131,7 +132,6 @@ class ListModeViewController: UIViewController {
   
   deinit {
     ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
-    print("reference has been removed")
   }
 }
 
@@ -140,6 +140,7 @@ class ListModeViewController: UIViewController {
 extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationControllerDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let selectedCellSourceView = tableView.cellForRow(at: indexPath)
+    let yOffset = CGFloat(200)
     
     guard let popover = storyboard?.instantiateViewController(withIdentifier: "TaskDetailsViewController") as? TaskDetailsViewController else { return }
     popover.modalPresentationStyle = .popover
@@ -147,23 +148,22 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
     popover.popoverPresentationController?.delegate = self
     popover.popoverPresentationController?.sourceView = selectedCellSourceView
     popover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
-    popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y - 200, width: 0, height: 0)
+    popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y - yOffset, width: 0, height: 0)
     
-    //TODO: - make const
-    
-    if let name = self.undoneTasks[indexPath.row].name {
+    let undoneTasksArrayRef = self.undoneTasks[indexPath.row]
+    if let name = undoneTasksArrayRef.name {
       popover.name = name
     }
-    if let dateTime = self.undoneTasks[indexPath.row].dateTime {
+    if let dateTime = undoneTasksArrayRef.dateTime {
       popover.dateTime = dateTime
     }
-    if let description = self.undoneTasks[indexPath.row].noteDescription {
+    if let description = undoneTasksArrayRef.noteDescription {
       popover.noteDescription = description
     }
-    if let attachedImage = self.undoneTasks[indexPath.row].attachedImageUrl {
+    if let attachedImage = undoneTasksArrayRef.attachedImageUrl {
       popover.attachedImageUrl = attachedImage
     }
-    if let noteUrl = self.undoneTasks[indexPath.row].ref {
+    if let noteUrl = undoneTasksArrayRef.ref {
       popover.ref = noteUrl
     }
     
