@@ -9,31 +9,23 @@
 import UIKit
 import FirebaseAuth
 
-class SignUpViewController: UIViewController {
-  @IBOutlet weak var emailField: UITextField!
-  @IBOutlet weak var passwordField: UITextField!
+class SignUpViewController: UIViewController, AuthDelegate {
+  @IBOutlet weak var emailTextField: UITextField!
+  @IBOutlet weak var passwordTextField: UITextField!
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    AuthManager.share.delegate = self
+  }
   
   //MARK: - Action Handler for signUpButton
   
   @IBAction func didTapSignUp(_ sender: UIButton) {
-    let email = emailField.text
-    let password = passwordField.text
-    Auth.auth().createUser(withEmail: email!, password: password!, completion: { (user, error) in
-      if let error = error {
-        if let errCode = AuthErrorCode(rawValue: error._code) {
-          switch errCode {
-          case .invalidEmail:
-            self.showAlert("Enter a valid email.")
-          case .emailAlreadyInUse:
-            self.showAlert("Email already in use.")
-          default:
-            self.showAlert("Error: \(error.localizedDescription)")
-          }
-        }
-        return
-      }
-      self.signIn()
-    })
+    if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
+      return
+    }
+    AuthManager.share.signUp(email: emailTextField.text!, password: passwordTextField.text!)
   }
   
   //MARK: - Action Handler for backToLoginButton
@@ -41,6 +33,8 @@ class SignUpViewController: UIViewController {
   @IBAction func didTapBackToLogin(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {})
   }
+  
+  //MARK: - Function thats handling alerts
   
   func showAlert(_ message: String) {
     let alertController = UIAlertController(title: "ToDo-App", message: message, preferredStyle: UIAlertController.Style.alert)
@@ -50,7 +44,7 @@ class SignUpViewController: UIViewController {
   
   //MARK: - Function that perfom segue to main menu 
   
-  func signIn() {
+  func signInSegue() {
     performSegue(withIdentifier: "SignInFromSignUp", sender: nil)
   }
 }

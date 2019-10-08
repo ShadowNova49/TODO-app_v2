@@ -522,8 +522,8 @@
                         <viewLayoutGuide key="safeArea" id="VFO-lm-kzm"/>
                     </view>
                     <connections>
-                        <outlet property="emailField" destination="0cf-ak-NJy" id="Vcw-Ye-qeO"/>
-                        <outlet property="passwordField" destination="Qmh-Mc-FGf" id="MBh-Va-vkl"/>
+                        <outlet property="emailTextField" destination="0cf-ak-NJy" id="Vcw-Ye-qeO"/>
+                        <outlet property="passwordTextField" destination="Qmh-Mc-FGf" id="MBh-Va-vkl"/>
                         <segue destination="LVl-Z5-fMe" kind="show" identifier="SignInFromLogin" id="jie-pD-jwd"/>
                     </connections>
                 </viewController>
@@ -608,8 +608,8 @@
                         <viewLayoutGuide key="safeArea" id="2qF-OR-xeC"/>
                     </view>
                     <connections>
-                        <outlet property="emailField" destination="QFt-Pi-f8I" id="Nfj-1I-wfT"/>
-                        <outlet property="passwordField" destination="qig-7t-N8d" id="l6h-yq-kZV"/>
+                        <outlet property="emailTextField" destination="QFt-Pi-f8I" id="Nfj-1I-wfT"/>
+                        <outlet property="passwordTextField" destination="qig-7t-N8d" id="l6h-yq-kZV"/>
                         <segue destination="LVl-Z5-fMe" kind="show" identifier="SignInFromSignUp" id="gPQ-ID-Stp"/>
                     </connections>
                 </viewController>
