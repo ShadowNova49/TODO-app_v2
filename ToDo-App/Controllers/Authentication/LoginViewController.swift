@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FirebaseAuth
 
 class LoginViewController: UIViewController, AuthDelegate {
   @IBOutlet weak var emailTextField: UITextField!
@@ -17,10 +16,7 @@ class LoginViewController: UIViewController, AuthDelegate {
     super.viewDidAppear(animated)
     
     AuthManager.share.delegate = self
-    
-    if let _ = Auth.auth().currentUser {
-      self.signInSegue()
-    }
+    AuthManager.share.userIsLogin()
   }
   
   //MARK: - Action Handler for signInButton
