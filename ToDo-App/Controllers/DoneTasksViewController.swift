@@ -7,49 +7,24 @@
 //
 
 import UIKit
-import Firebase
 import Kingfisher
 import ChameleonFramework
 
-class DoneTasksViewController: UIViewController {
+class DoneTasksViewController: UIViewController, TodoListObserver {
   @IBOutlet weak var doneTasksTableView: UITableView!
   
-  var user: User!
-  var ref: DatabaseReference!
-  private var databaseHandle: DatabaseHandle!
-  
-  var doneTasks: [Item] = []
+  var requestedTasks: [Item] = [] {
+    didSet {
+      doneTasksTableView.reloadData()
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    user = Auth.auth().currentUser
-    ref = Database.database().reference()
-    startObservingDatabase()
+    TodoListManager.shared.delegate = self
+    TodoListManager.shared.startObservingDatabase(for: .doneTasks)
   }
   
-  //MARK: - Function that receives a snapshot that contains the data at the specified location in the
-  //database at the time of the event in its value property. In this case this is the list of done tasks 
-  
-  func startObservingDatabase () {
-    databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
-      var newDoneTasks: [Item] = []
-      
-      for itemSnapShot in snapshot.children {
-        let item = Item(snapshot: itemSnapShot as! DataSnapshot)
-        if item.isDone == true {
-          newDoneTasks.append(item)
-        }
-      }
-      self.doneTasks = newDoneTasks
-      self.doneTasksTableView.reloadData()
-    })
-  }
-  
-  deinit {
-    ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
-  }
-
   @IBAction func dismissView (_ sender: UIBarButtonItem){
     dismiss(animated: true, completion: nil)
   }
@@ -65,10 +40,10 @@ extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationCon
     popover.popoverPresentationController?.backgroundColor = UIColor(red: 0.93, green: 0.98, blue: 0.93, alpha: 1.00)
     popover.popoverPresentationController?.delegate = self
     popover.popoverPresentationController?.sourceView = selectedCellSourceView
-    popover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0) // .up
+    popover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
     popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y - yOffset, width: 0, height: 0)
     
-    let doneTasksArrayRef = self.doneTasks[indexPath.row]
+    let doneTasksArrayRef = self.requestedTasks[indexPath.row]
     if let name = doneTasksArrayRef.name {
       popover.name = name
     }
@@ -81,8 +56,8 @@ extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationCon
     if let attachedImage = doneTasksArrayRef.attachedImageUrl {
       popover.attachedImageUrl = attachedImage
     }
-    if let noteUrl = doneTasksArrayRef.ref {
-      popover.ref = noteUrl
+    if let taskUid = doneTasksArrayRef.noteUid {
+      popover.noteUid = taskUid
     }
     
     self.present(popover, animated: true)
@@ -107,20 +82,9 @@ extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationCon
   
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-      //Delete todo
-      let item = self.doneTasks[indexPath.row]
-      item.ref?.removeValue()
-      
-      let imageRef = Storage.storage().reference().child("note_attach_image").child("\(item.attachedImageUid!).png")
-      print(item.attachedImageUrl!)
-      imageRef.delete {
-        error in
-        if let error = error {
-          print(error)
-        } else {
-          print("File deleted successfully")
-        }
-      }
+      // Delete todo
+      let item = self.requestedTasks[indexPath.row]
+      TodoListManager.shared.deleteTodo(with: item.noteUid!, and: item.attachedImageUid)
     }
     action.backgroundColor = .flatRed
     
@@ -128,11 +92,11 @@ extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationCon
   }
   
   func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let action = UIContextualAction(style: .destructive, title: "⩗") { (action, view, completion) in
-      //Mark todo like undone
-      let item = self.doneTasks[indexPath.row]
-      let post = [ "isDone": false ]
-      item.ref!.updateChildValues(post as [AnyHashable : Any])
+    let action = UIContextualAction(style: .destructive, title: "-⩗") { (action, view, completion) in
+      // Mark todo like undone
+      let noteRef = self.requestedTasks[indexPath.row].noteUid
+      let data = [ "isDone": false ]
+      TodoListManager.shared.updateExistingTodo(with: data as [AnyHashable : Any], and: noteRef!)
     }
     action.backgroundColor = .flatMint
     
@@ -142,13 +106,13 @@ extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationCon
 
 extension DoneTasksViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.doneTasks.count
+    return self.requestedTasks.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let reusebleIdentifier = "NoteCell"
     let cell = tableView.dequeueReusableCell(withIdentifier: reusebleIdentifier, for: indexPath) as! TableViewNoteCell
-    let item = self.doneTasks[indexPath.row]
+    let item = self.requestedTasks[indexPath.row]
     cell.noteNameLabel.text = item.name
     cell.noteDateTimeLabel.text = item.dateTime
     return cell

@@ -15,7 +15,7 @@ class SignUpViewController: UIViewController, AuthDelegate {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    AuthManager.share.delegate = self
+    AuthManager.share.authDelegate = self
   }
   
   //MARK: - Action Handler for signUpButton

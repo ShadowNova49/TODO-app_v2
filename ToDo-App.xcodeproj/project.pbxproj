@@ -183,10 +183,10 @@
 			children = (
 				51234D11233E6A3C00C823DA /* ListModeViewController.swift */,
 				516295FA232E71CF0072F575 /* DoneTasksViewController.swift */,
+				51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */,
 				514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */,
 				5173B95D23224983005AD2F9 /* NewTaskViewControler.swift */,
 				514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */,
-				51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */,
 				51FCBDCA233FA85E00136A17 /* FullScreenImageViewController.swift */,
 				513B344F23420960000CBBA3 /* Authentication */,
 			);

@@ -6,10 +6,9 @@
 //
 
 import Foundation
-import FirebaseDatabase
 
 class Item {
-  let ref: DatabaseReference?
+  let noteUid: String?
   let name: String?
   let noteDescription: String?
   let dateTime: String?
@@ -17,35 +16,34 @@ class Item {
   let isDone: Bool
   let attachedImageUid: String?
   
-  init(name: String?, noteDescription: String?, dateTime: String?, attachedImageUrl: String?, attachedImageUid: String?) {
-    self.ref = nil
+  init(name: String?, noteUid: String?, noteDescription: String?, dateTime: String?, attachedImageUrl: String?, attachedImageUid: String?) {
     self.name = name
     self.noteDescription = noteDescription
     self.dateTime = dateTime
     self.attachedImageUrl = attachedImageUrl
     self.attachedImageUid = attachedImageUid
     self.isDone = false
+    self.noteUid = noteUid
   }
   
-  init(snapshot: DataSnapshot) {
-    ref = snapshot.ref
-    
-    let data = snapshot.value as! Dictionary<String, Any>
+  init(data: Dictionary<String, Any>) {
     self.name = data["name"] as? String
     self.noteDescription = data["noteDescription"] as? String
     self.dateTime = data["dateTime"] as? String
     self.attachedImageUrl = data["attachedImageUrl"] as? String
     self.attachedImageUid = data["attachedImageUid"] as? String
     self.isDone = data["isDone"] as! Bool
+    self.noteUid = data["noteUid"] as? String
   }
   
   func toAnyObject() -> Any {
     return [
-      "name": name,
-      "noteDescription": noteDescription,
-      "dateTime": dateTime,
-      "attachedImageUrl": attachedImageUrl,
-      "attachedImageUid": attachedImageUid,
+      "name": name as Any,
+      "noteUid": noteUid as Any,
+      "noteDescription": noteDescription as Any,
+      "dateTime": dateTime as Any,
+      "attachedImageUrl": attachedImageUrl as Any,
+      "attachedImageUid": attachedImageUid as Any,
       "isDone": isDone
     ]
   }

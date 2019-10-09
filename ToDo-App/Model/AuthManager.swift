@@ -10,13 +10,18 @@ import Foundation
 import FirebaseAuth
 
 protocol AuthDelegate {
-  func showAlert(_ message: String ) // authenticationFailed
-  func signInSegue() //authenticationSucceeded
+  func showAlert(_ message: String )
+  func signInSegue()
+}
+
+protocol SignOutDelegate {
+  func signOutSegue()
 }
 
 class AuthManager {
-  static var share = AuthManager()
-  var delegate: AuthDelegate!
+  static let share = AuthManager()
+  var authDelegate: AuthDelegate!
+  var signOutDelegate: SignOutDelegate!
   
   func signIn(email: String, password: String) {
     Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
@@ -25,11 +30,11 @@ class AuthManager {
           if let errCode = AuthErrorCode(rawValue: error._code) {
             switch errCode {
             case .userNotFound:
-              self.delegate.showAlert("User account not found. Try registering")
+              self.authDelegate.showAlert("User account not found. Try registering")
             case .wrongPassword:
-              self.delegate.showAlert("Incorrect username/password combination")
+              self.authDelegate.showAlert("Incorrect username/password combination")
             default:
-              self.delegate.showAlert("Error: \(error.localizedDescription)")
+              self.authDelegate.showAlert("Error: \(error.localizedDescription)")
             }
           }
           return
@@ -37,7 +42,7 @@ class AuthManager {
         assertionFailure("user and error are nil")
         return
       }
-      self.delegate.signInSegue()
+      self.authDelegate.signInSegue()
     })
   }
 
@@ -47,16 +52,16 @@ class AuthManager {
         if let errCode = AuthErrorCode(rawValue: error._code) {
           switch errCode {
           case .invalidEmail:
-            self.delegate.showAlert("Enter a valid email.")
+            self.authDelegate.showAlert("Enter a valid email.")
           case .emailAlreadyInUse:
-            self.delegate.showAlert("Email already in use.")
+            self.authDelegate.showAlert("Email already in use.")
           default:
-            self.delegate.showAlert("Error: \(error.localizedDescription)")
+            self.authDelegate.showAlert("Error: \(error.localizedDescription)")
           }
         }
         return
       }
-      self.delegate.signInSegue()
+      self.authDelegate.signInSegue()
     })
   }
   
@@ -67,26 +72,35 @@ class AuthManager {
           switch errCode {
           case .userNotFound:
             DispatchQueue.main.async {
-              self.delegate.showAlert("User account not found. Try registering")
-            }
+              self.authDelegate.showAlert("User account not found. Try registering")
+           }
           default:
             DispatchQueue.main.async {
-              self.delegate.showAlert("Error: \(error.localizedDescription)")
+              self.authDelegate.showAlert("Error: \(error.localizedDescription)")
             }
           }
         }
         return
       } else {
         DispatchQueue.main.async {
-          self.delegate.showAlert("You'll receive an email shortly to reset your password.")
+          self.authDelegate.showAlert("You'll receive an email shortly to reset your password.")
         }
       }
     })
   }
   
+  func signOut() {
+    do {
+      try Auth.auth().signOut()
+      self.signOutDelegate.signOutSegue()
+    } catch let error {
+      assertionFailure("Error signing out: \(error)")
+    }
+  }
+  
   func userIsLogin() {
     if let _ = Auth.auth().currentUser {
-      self.delegate.signInSegue()
+      self.authDelegate.signInSegue()
     }
   }
 }

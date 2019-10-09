@@ -11,19 +11,10 @@ import UIKit
 class Slider: NSObject, UIViewControllerAnimatedTransitioning  {
   var isPresenting = false
   var dimmingView = UIView()
-  //var transition = Slider()
   
   func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
     return 0.2
   }
-  
-//   @objc func tapWasDetected(_ sender: UITapGestureRecognizer) {
-//    let touchPoint = sender.location(in: dimmingView)
-//      if dimmingView.frame.contains(touchPoint) {
-//        print("Work")
-//        self.dimmingView.alpha = 0.0
-//      }
-//   }
   
   func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
     
@@ -39,9 +30,6 @@ class Slider: NSObject, UIViewControllerAnimatedTransitioning  {
       // Add dimming view
       dimmingView.backgroundColor = .black
       dimmingView.alpha = 0.0
-      
-      //let tapToHideMenu = UITapGestureRecognizer(target: self, action: #selector(tapWasDetected(_:)))
-      //self.dimmingView.addGestureRecognizer(tapToHideMenu)
       
       containerView.addSubview(dimmingView)
       dimmingView.frame = containerView.bounds
