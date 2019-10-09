@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 
 extension NewTaskViewControler: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

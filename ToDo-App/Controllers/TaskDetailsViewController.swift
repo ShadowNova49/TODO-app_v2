@@ -8,7 +8,6 @@
 
 import UIKit
 import Kingfisher
-import Firebase
 
 class TaskDetailsViewController: UIViewController {
   @IBOutlet weak var noteNameTextField: UITextField!
@@ -27,7 +26,8 @@ class TaskDetailsViewController: UIViewController {
   var noteDescription: String?
   var attachedImageUrl: String?
   
-  var ref: DatabaseReference!
+  //var ref: DatabaseReference!
+  var noteUid: String!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -64,11 +64,11 @@ class TaskDetailsViewController: UIViewController {
   
   @IBAction func doneButton(_ sender: UIButton) {
     if noteNameTextField.text != name || noteDescriptionTextField.text != noteDescription {
-      let post = [
+      let data = [
         "name": noteNameTextField.text,
         "noteDescription": noteDescriptionTextField.text
       ]
-      ref.updateChildValues(post as [AnyHashable : Any])
+      TodoListManager.shared.updateExistingTodo(with: data as [AnyHashable : Any], and: noteUid)
     }
     dismiss(animated: true, completion: nil)
   }

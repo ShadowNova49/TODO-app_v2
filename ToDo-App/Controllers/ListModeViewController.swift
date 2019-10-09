@@ -7,38 +7,25 @@
 //
 
 import UIKit
-import Firebase
 import ChameleonFramework
 
-class ListModeViewController: UIViewController {
+class ListModeViewController: UIViewController, TodoListObserver, SignOutDelegate {
   @IBOutlet weak var undoneTasksTableView: UITableView!
   
   let transition = Slider()
   var addNewNoteButton = UIButton()
   var doneTasksButton = UIButton()
   
-  var user: User!
-  var ref: DatabaseReference!
-  private var databaseHandle: DatabaseHandle!
-  
-  var undoneTasks: [Item] = []
+  var requestedTasks: [Item] = [] {
+    didSet {
+      undoneTasksTableView.reloadData()
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    self.addNewNoteButton = UIButton(type: .custom)
-    self.addNewNoteButton.setTitleColor(.blue, for: .normal)
-    self.addNewNoteButton.addTarget(self, action: #selector(addNewNoteButtonClick(_:)), for: .touchUpInside)
-    self.view.addSubview(addNewNoteButton)
-    
-    self.doneTasksButton = UIButton(type: .custom)
-    self.doneTasksButton.setTitleColor(.blue, for: .normal)
-    self.doneTasksButton.addTarget(self, action: #selector(doneTasksButtonClick(_:)), for: .touchUpInside)
-    self.view.addSubview(doneTasksButton)
-    
-    user = Auth.auth().currentUser
-    ref = Database.database().reference()
-    startObservingDatabase()
+    buttonsCreator()
+    setupTableView()
   }
   
   override func viewWillLayoutSubviews() {
@@ -65,18 +52,41 @@ class ListModeViewController: UIViewController {
   //MARK: - Action Handler for signOutButton
   
   @IBAction func didTapSignOut(_ sender: UIBarButtonItem) {
-    do {
-      try Auth.auth().signOut()
-      performSegue(withIdentifier: "SignOut", sender: nil)
-    } catch let error {
-      assertionFailure("Error signing out: \(error)")
-    }
+    AuthManager.share.signOut()
+  }
+  
+  //MARK: - Function that perfom segue to sign in menu
+  
+  func signOutSegue() {
+    performSegue(withIdentifier: "SignOut", sender: nil)
   }
   
   //MARK: - Function that help to dismiss keyboard while user interact with view
   
   @objc func touchWasDetected(_ sender: UITapGestureRecognizer) {
     view.endEditing(true)
+  }
+ 
+  //MARK: - Function that help to prepare data for table view
+  
+  func setupTableView() {
+    AuthManager.share.signOutDelegate = self
+    TodoListManager.shared.delegate = self
+    TodoListManager.shared.startObservingDatabase(for: .undoneTasks)
+  }
+  
+  //MARK: - Function that create overlay buttons
+  
+  func buttonsCreator() {
+    self.addNewNoteButton = UIButton(type: .custom)
+    self.addNewNoteButton.setTitleColor(.blue, for: .normal)
+    self.addNewNoteButton.addTarget(self, action: #selector(addNewNoteButtonClick(_:)), for: .touchUpInside)
+    self.view.addSubview(addNewNoteButton)
+    
+    self.doneTasksButton = UIButton(type: .custom)
+    self.doneTasksButton.setTitleColor(.blue, for: .normal)
+    self.doneTasksButton.addTarget(self, action: #selector(doneTasksButtonClick(_:)), for: .touchUpInside)
+    self.view.addSubview(doneTasksButton)
   }
   
   //MARK: - doneTasksButton layout setup method
@@ -111,28 +121,6 @@ class ListModeViewController: UIViewController {
       addNewNoteButton.widthAnchor.constraint(equalToConstant: 50),
       addNewNoteButton.heightAnchor.constraint(equalToConstant: 50)])
   }
-  
-  //MARK: - Function that receives a snapshot that contains the data at the specified location in the database
-  //at the time of the event in its value property. In this case this is the list of undone tasks
-  
-  func startObservingDatabase () {
-    databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
-      var newUndoneTasks: [Item] = []
-      
-      for itemSnapShot in snapshot.children {
-        let item = Item(snapshot: itemSnapShot as! DataSnapshot)
-        if item.isDone == false {
-          newUndoneTasks.append(item)
-        }
-      }
-      self.undoneTasks = newUndoneTasks
-      self.undoneTasksTableView.reloadData()
-    })
-  }
-  
-  deinit {
-    ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
-  }
 }
 
 // MARK: - UITableViewDelegate, UIPopoverPresentationControllerDelegate
@@ -150,7 +138,7 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
     popover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
     popover.popoverPresentationController?.sourceRect = CGRect(x: view.center.x, y: view.center.y - yOffset, width: 0, height: 0)
     
-    let undoneTasksArrayRef = self.undoneTasks[indexPath.row]
+    let undoneTasksArrayRef = self.requestedTasks[indexPath.row]
     if let name = undoneTasksArrayRef.name {
       popover.name = name
     }
@@ -163,8 +151,8 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
     if let attachedImage = undoneTasksArrayRef.attachedImageUrl {
       popover.attachedImageUrl = attachedImage
     }
-    if let noteUrl = undoneTasksArrayRef.ref {
-      popover.ref = noteUrl
+    if let taskUid = undoneTasksArrayRef.noteUid {
+      popover.noteUid = taskUid
     }
     
     self.present(popover, animated: true)
@@ -190,18 +178,8 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
       // Delete todo
-      let item = self.undoneTasks[indexPath.row]
-      item.ref?.removeValue()
-      
-      let imageRef = Storage.storage().reference().child("note_attach_image").child("\(item.attachedImageUid!).png")
-      imageRef.delete {
-        error in
-        if let error = error {
-          print(error)
-        } else {
-          print("File deleted successfully")
-        }
-      }
+      let item = self.requestedTasks[indexPath.row]
+      TodoListManager.shared.deleteTodo(with: item.noteUid!, and: item.attachedImageUid ?? nil)
     }
     action.backgroundColor = .flatRed
 
@@ -211,9 +189,9 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
   func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let action = UIContextualAction(style: .destructive, title: "✔") { (action, view, completion) in
       // Mark todo like done
-      let item = self.undoneTasks[indexPath.row]
-      let post = [ "isDone": true ]
-      item.ref!.updateChildValues(post as [AnyHashable : Any])
+      let noteRef = self.requestedTasks[indexPath.row].noteUid
+      let data = [ "isDone": true ]
+      TodoListManager.shared.updateExistingTodo(with: data as [AnyHashable : Any], and: noteRef!)
     }
     action.backgroundColor = .flatMint
     
@@ -225,13 +203,13 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
 
 extension ListModeViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.undoneTasks.count
+    return self.requestedTasks.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let reusebleIdentifier = "NoteCell"
     let cell = tableView.dequeueReusableCell(withIdentifier: reusebleIdentifier, for: indexPath) as! TableViewNoteCell
-    let item = self.undoneTasks[indexPath.row]
+    let item = self.requestedTasks[indexPath.row]
     cell.noteNameLabel.text = item.name
     cell.noteDateTimeLabel.text = item.dateTime
     return cell

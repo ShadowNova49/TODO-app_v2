@@ -7,46 +7,21 @@
 //
 
 import UIKit
-import Firebase
 import Kingfisher
 
-class GalleryViewController: UIViewController {
+class GalleryViewController: UIViewController, TodoListObserver {
   @IBOutlet weak var collectionView: UICollectionView!
   
-  var user: User!
-  var ref: DatabaseReference!
-  private var databaseHandle: DatabaseHandle!
-  
-  var itemsImageUrls: [Item] = []
+  var requestedTasks: [Item] = [] {
+    didSet {
+      collectionView.reloadData()
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    user = Auth.auth().currentUser
-    ref = Database.database().reference()
-    startObservingDatabase()
-  }
-  
-  //MARK: - Function that receives a snapshot that contains the data at the specified location in the
-  //database at the time of the event in its value property. In this case th list of items with images 
-  
-  func startObservingDatabase() {
-    databaseHandle = ref.child("users/\(self.user.uid)/notes").observe(.value, with: { (snapshot) in
-      var newItemsImageUrls: [Item] = []
-
-      for itemSnapShot in snapshot.children {
-        let item = Item(snapshot: itemSnapShot as! DataSnapshot)
-        if item.attachedImageUrl != nil {
-          newItemsImageUrls.append(item)
-        }
-      }
-      self.itemsImageUrls = newItemsImageUrls
-      self.collectionView.reloadData()
-    })
-  }
-
-  deinit {
-    ref.child("users/\(self.user.uid)/notes").removeObserver(withHandle: databaseHandle)
+    TodoListManager.shared.delegate = self
+    TodoListManager.shared.startObservingDatabase(for: .imagesRef)
   }
 }
 
@@ -54,13 +29,13 @@ class GalleryViewController: UIViewController {
 
 extension GalleryViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.itemsImageUrls.count
+    return self.requestedTasks.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let reusebleIdentifier = "ImageCell"
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusebleIdentifier, for: indexPath) as! ImageCollectionViewCell
-    cell.imageView.kf.setImage(with: URL(string: itemsImageUrls[indexPath.row].attachedImageUrl!), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
+    cell.imageView.kf.setImage(with: URL(string: requestedTasks[indexPath.row].attachedImageUrl!), placeholder: nil, options: [.transition(.fade(0.7))], progressBlock: nil, completionHandler: nil)
     return cell
   }
 }
@@ -76,7 +51,7 @@ extension GalleryViewController: UICollectionViewDelegate {
     if segue.identifier == "FromGalleryToGallery" {
       let viewController = segue.destination as! FullScreenImageViewController
       let indexPath = sender as? IndexPath
-      viewController.imageUrl = itemsImageUrls[indexPath!.row].attachedImageUrl!
+      viewController.imageUrl = requestedTasks[indexPath!.row].attachedImageUrl!
     }
   }
 }

@@ -11,6 +11,7 @@
 		51234D12233E6A3D00C823DA /* ListModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51234D11233E6A3C00C823DA /* ListModeViewController.swift */; };
 		514D02BB233A0BCA00E675F8 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */; };
 		514D02BD233A1C5700E675F8 /* NewTaskController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */; };
+		51554423234B538800158BAF /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51554422234B538800158BAF /* AuthManager.swift */; };
 		516295FB232E71CF0072F575 /* DoneTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516295FA232E71CF0072F575 /* DoneTasksViewController.swift */; };
 		5173B95C232231FA005AD2F9 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5173B95B232231FA005AD2F9 /* Slider.swift */; };
 		5173B95E23224983005AD2F9 /* NewTaskViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5173B95D23224983005AD2F9 /* NewTaskViewControler.swift */; };
@@ -55,6 +56,7 @@
 		51234D11233E6A3C00C823DA /* ListModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListModeViewController.swift; sourceTree = "<group>"; };
 		514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTaskController+handlers.swift"; sourceTree = "<group>"; };
+		51554422234B538800158BAF /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		516295FA232E71CF0072F575 /* DoneTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneTasksViewController.swift; sourceTree = "<group>"; };
 		5173B95B232231FA005AD2F9 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		5173B95D23224983005AD2F9 /* NewTaskViewControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewControler.swift; sourceTree = "<group>"; };
@@ -115,8 +117,8 @@
 		513B344F23420960000CBBA3 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				519C6280232FCADD00D243E2 /* SignUpViewController.swift */,
 				519C627F232FCADD00D243E2 /* LoginViewController.swift */,
+				519C6280232FCADD00D243E2 /* SignUpViewController.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -171,6 +173,7 @@
 			children = (
 				51FC35FB233812CF0094C4FA /* Item.swift */,
 				5103E71F2347130A0003C87B /* DatabaseObserver.swift */,
+				51554422234B538800158BAF /* AuthManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -180,10 +183,10 @@
 			children = (
 				51234D11233E6A3C00C823DA /* ListModeViewController.swift */,
 				516295FA232E71CF0072F575 /* DoneTasksViewController.swift */,
+				51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */,
 				514D02BA233A0BCA00E675F8 /* GalleryViewController.swift */,
 				5173B95D23224983005AD2F9 /* NewTaskViewControler.swift */,
 				514D02BC233A1C5700E675F8 /* NewTaskController+handlers.swift */,
-				51FCBDC6233FA3E700136A17 /* TaskDetailsViewController.swift */,
 				51FCBDCA233FA85E00136A17 /* FullScreenImageViewController.swift */,
 				513B344F23420960000CBBA3 /* Authentication */,
 			);
@@ -454,6 +457,7 @@
 				5173B95C232231FA005AD2F9 /* Slider.swift in Sources */,
 				519C6281232FCADD00D243E2 /* LoginViewController.swift in Sources */,
 				51234D12233E6A3D00C823DA /* ListModeViewController.swift in Sources */,
+				51554423234B538800158BAF /* AuthManager.swift in Sources */,
 				519C6282232FCADD00D243E2 /* SignUpViewController.swift in Sources */,
 				514D02BB233A0BCA00E675F8 /* GalleryViewController.swift in Sources */,
 				516295FB232E71CF0072F575 /* DoneTasksViewController.swift in Sources */,
