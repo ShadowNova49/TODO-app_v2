@@ -25,6 +25,10 @@ class ListModeViewController: UIViewController, TodoListObserver, SignOutDelegat
   override func viewDidLoad() {
     super.viewDidLoad()
     buttonsCreator()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(true)
     setupTableView()
   }
   
@@ -168,7 +172,7 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
     return .none
   }
   
-  /** Function that helped popover to not desappear at once after a click  **/
+  // MARK: - Function that helped popover to not desappear at once after a click
   
   func delay(on time: Double, closure: @escaping ()->()) {
     let when = DispatchTime.now() + time
