@@ -98,6 +98,7 @@ class AuthManager {
     }
   }
   
+  
   func userIsLogin() {
     if let _ = Auth.auth().currentUser {
       self.authDelegate.signInSegue()

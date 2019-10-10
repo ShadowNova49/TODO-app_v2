@@ -25,6 +25,10 @@ class ListModeViewController: UIViewController, TodoListObserver, SignOutDelegat
   override func viewDidLoad() {
     super.viewDidLoad()
     buttonsCreator()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(true)
     setupTableView()
   }
   

@@ -13,20 +13,12 @@ class TaskDetailsViewController: UIViewController {
   @IBOutlet weak var noteNameTextField: UITextField!
   @IBOutlet weak var noteDateTimeTextField: UITextField!
   @IBOutlet weak var noteDescriptionTextField: UITextView!
-  @IBOutlet weak var noteAttachedImage: UIImageView! {
-    didSet{
-      noteAttachedImage.isUserInteractionEnabled = true
-      let tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(self.imageTap))
-      noteAttachedImage.addGestureRecognizer(tapGesture)
-    }
-  }
+  @IBOutlet weak var noteAttachedImage: UIImageView!
   
   var name: String?
   var dateTime: String?
   var noteDescription: String?
   var attachedImageUrl: String?
-  
-  //var ref: DatabaseReference!
   var noteUid: String!
   
   override func viewDidLoad() {
@@ -37,7 +29,11 @@ class TaskDetailsViewController: UIViewController {
     self.noteDescriptionTextField.text = noteDescription
     
     if let attachedImageUrl = attachedImageUrl {
+      noteAttachedImage.kf.indicatorType = .activity
       noteAttachedImage.kf.setImage(with: URL(string: attachedImageUrl))
+      noteAttachedImage.isUserInteractionEnabled = true
+      let tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(self.imageTap))
+      noteAttachedImage.addGestureRecognizer(tapGesture)
     }
   }
   

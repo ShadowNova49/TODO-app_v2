@@ -1,9 +1,9 @@
 //
-//DatabaseObserver.swift
-//ToDo-App
+//  DatabaseObserver.swift
+//  ToDo-App
 //
-//Created by Никита Шалыгин on 04.10.2019.
-//Copyright © 2019 Никита Шалыгин. All rights reserved.
+//  Created by Никита Шалыгин on 04.10.2019.
+//  Copyright © 2019 Никита Шалыгин. All rights reserved.
 //
 
 import Foundation
@@ -20,8 +20,7 @@ enum ObserveCase {
 class TodoListManager {
   static let shared = TodoListManager()
   var delegate: TodoListObserver!
-  
-  //var user: User!
+
   private let ref = Database.database().reference()
   private var databaseHandle: DatabaseHandle!
   
@@ -37,12 +36,18 @@ class TodoListManager {
     return Storage.storage().reference().child("note_attach_image").child("\(imageUid).png")
   }
   
+  //MARK: - Function that take note reference
+  
+  private func getNoteRef(noteUid: String) -> DatabaseReference {
+    return ref.child("users/\(getCurrentUser().uid)/notes").child(noteUid)
+  }
+  
   ///MARK: - Function that create template of new Todo
   
   func createNewTodo(noteName: String, noteDescription: String?, dateTime: String?, attachedImage: UIImage?) {
-    let imageAddress = UUID().uuidString
-    let noteUid = imageAddress
-    let storageRef = getImageRef(imageUid: imageAddress)
+    let imageUid = UUID().uuidString
+    let noteUid = imageUid
+    let storageRef = getImageRef(imageUid: imageUid)
     var noteItem: Item?
 
     if let uploadData = attachedImage?.pngData() {
@@ -55,12 +60,14 @@ class TodoListManager {
           }
           guard let url = url else { return }
           
-          noteItem = Item(name: noteName, noteUid: noteUid, noteDescription: noteDescription, dateTime: dateTime, attachedImageUrl: url.absoluteString, attachedImageUid: imageAddress)
+          noteItem = Item(name: noteName, noteUid: noteUid, noteDescription: noteDescription, dateTime: dateTime,
+                          attachedImageUrl: url.absoluteString, attachedImageUid: imageUid)
           self.upload(note: noteItem!, noteUid: noteUid)
         })
       })
     } else {
-      noteItem = Item(name: noteName, noteUid: noteUid, noteDescription: noteDescription, dateTime: dateTime, attachedImageUrl: nil, attachedImageUid: nil)
+      noteItem = Item(name: noteName, noteUid: noteUid, noteDescription: noteDescription, dateTime: dateTime,
+                      attachedImageUrl: nil, attachedImageUid: nil)
       self.upload(note: noteItem!, noteUid: noteUid)
     }
   }
@@ -72,22 +79,17 @@ class TodoListManager {
     noteRef.setValue(item.toAnyObject())
   }
   
-  //MARK: - Function that take note reference
-  
-  private func getTaskRef(noteUid: String) -> DatabaseReference {
-    return ref.child("users/\(getCurrentUser().uid)/notes").child(noteUid)
-  }
   
   //MARK: - Function that updating Todo's fields
   
   func updateExistingTodo(with data: [AnyHashable : Any], and noteRef: String) {
-    getTaskRef(noteUid: noteRef).updateChildValues(data)
+    getNoteRef(noteUid: noteRef).updateChildValues(data)
   }
   
   //MARK: - Function that delete Todo and linked image (if exist) from Firebase
   
   func deleteTodo(with noteRef: String, and attachedImageUid: String?) {
-    getTaskRef(noteUid: noteRef).removeValue()
+    getNoteRef(noteUid: noteRef).removeValue()
     if attachedImageUid != nil {
       let imageRef = getImageRef(imageUid: attachedImageUid!)
       imageRef.delete {
