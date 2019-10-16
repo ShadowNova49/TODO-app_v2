@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import Kingfisher
 import ChameleonFramework
+import DZNEmptyDataSet
 
 class DoneTasksViewController: UIViewController, TodoListObserver {
   @IBOutlet weak var doneTasksTableView: UITableView!
@@ -23,6 +23,10 @@ class DoneTasksViewController: UIViewController, TodoListObserver {
     super.viewDidLoad()
     TodoListManager.shared.delegate = self
     TodoListManager.shared.startObservingDatabase(for: .doneTasks)
+    
+    doneTasksTableView.emptyDataSetSource = self
+    doneTasksTableView.emptyDataSetDelegate = self
+    doneTasksTableView.tableFooterView = UIView()
   }
   
   @IBAction func dismissView (_ sender: UIBarButtonItem){
@@ -30,7 +34,7 @@ class DoneTasksViewController: UIViewController, TodoListObserver {
   }
 }
 
-extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationControllerDelegate {
+extension DoneTasksViewController: UITableViewDelegate, DZNEmptyDataSetDelegate, UIPopoverPresentationControllerDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let selectedCellSourceView = tableView.cellForRow(at: indexPath)
     let yOffset = CGFloat(200)
@@ -102,9 +106,25 @@ extension DoneTasksViewController: UITableViewDelegate, UIPopoverPresentationCon
     
     return UISwipeActionsConfiguration(actions: [action])
   }
+  
+  func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    let str = "Oops!"
+    let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline)]
+    return NSAttributedString(string: str, attributes: attrs)
+  }
+  
+  func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    let str = "Apparently you do not have completed tasks yet."
+    let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
+    return NSAttributedString(string: str, attributes: attrs)
+  }
+  
+  func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+    return UIImage(named: "empty_placeholder")
+  }
 }
 
-extension DoneTasksViewController: UITableViewDataSource {
+extension DoneTasksViewController: UITableViewDataSource, DZNEmptyDataSetSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.requestedTasks.count
   }

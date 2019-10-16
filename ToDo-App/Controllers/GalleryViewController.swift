@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import DZNEmptyDataSet
 
 class GalleryViewController: UIViewController, TodoListObserver {
   @IBOutlet weak var collectionView: UICollectionView!
@@ -22,12 +23,15 @@ class GalleryViewController: UIViewController, TodoListObserver {
     super.viewDidLoad()
     TodoListManager.shared.delegate = self
     TodoListManager.shared.startObservingDatabase(for: .imagesRef)
+    
+    collectionView.emptyDataSetSource = self
+    collectionView.emptyDataSetDelegate = self
   }
 }
 
 // MARK: - UICollectionViewDataSource
 
-extension GalleryViewController: UICollectionViewDataSource {
+extension GalleryViewController: UICollectionViewDataSource, DZNEmptyDataSetSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return self.requestedTasks.count
   }
@@ -42,7 +46,7 @@ extension GalleryViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 
-extension GalleryViewController: UICollectionViewDelegate {
+extension GalleryViewController: UICollectionViewDelegate, DZNEmptyDataSetDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     self.performSegue(withIdentifier: "FromGalleryToGallery", sender: indexPath)
   }
@@ -53,6 +57,22 @@ extension GalleryViewController: UICollectionViewDelegate {
       let indexPath = sender as? IndexPath
       viewController.imageUrl = requestedTasks[indexPath!.row].attachedImageUrl!
     }
+  }
+  
+  func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    let str = "This is your image library!"
+    let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline)]
+    return NSAttributedString(string: str, attributes: attrs)
+  }
+  
+  func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    let str = "But as you can see, it is still empty."
+    let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
+    return NSAttributedString(string: str, attributes: attrs)
+  }
+  
+  func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+    return UIImage(named: "bgImage")
   }
 }
 

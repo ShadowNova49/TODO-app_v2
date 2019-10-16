@@ -8,6 +8,7 @@
 
 import UIKit
 import ChameleonFramework
+import DZNEmptyDataSet
 
 class ListModeViewController: UIViewController, TodoListObserver, SignOutDelegate {
   @IBOutlet weak var undoneTasksTableView: UITableView!
@@ -25,6 +26,10 @@ class ListModeViewController: UIViewController, TodoListObserver, SignOutDelegat
   override func viewDidLoad() {
     super.viewDidLoad()
     buttonsCreator()
+    
+    undoneTasksTableView.emptyDataSetSource = self
+    undoneTasksTableView.emptyDataSetDelegate = self
+    undoneTasksTableView.tableFooterView = UIView()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -129,7 +134,7 @@ class ListModeViewController: UIViewController, TodoListObserver, SignOutDelegat
 
 // MARK: - UITableViewDelegate, UIPopoverPresentationControllerDelegate
 
-extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationControllerDelegate {
+extension ListModeViewController: UITableViewDelegate, DZNEmptyDataSetDelegate, UIPopoverPresentationControllerDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let selectedCellSourceView = tableView.cellForRow(at: indexPath)
     let yOffset = CGFloat(200)
@@ -201,11 +206,27 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
     
     return UISwipeActionsConfiguration(actions: [action])
   }
+  
+  func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    let str = "Welcome to TODO"
+    let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline)]
+    return NSAttributedString(string: str, attributes: attrs)
+  }
+  
+  func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    let str = "Tap the button below to add your first note."
+    let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
+    return NSAttributedString(string: str, attributes: attrs)
+  }
+  
+  func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+    return UIImage(named: "empty_placeholder")
+  }
 }
 
 // MARK: - UITableViewDataSource
 
-extension ListModeViewController: UITableViewDataSource {
+extension ListModeViewController: UITableViewDataSource, DZNEmptyDataSetSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.requestedTasks.count
   }
