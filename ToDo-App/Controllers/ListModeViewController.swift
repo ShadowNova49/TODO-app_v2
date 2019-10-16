@@ -16,6 +16,8 @@ class ListModeViewController: UIViewController, TodoListObserver, SignOutDelegat
   var addNewNoteButton = UIButton()
   var doneTasksButton = UIButton()
   
+  var todoListManager: TodoListManagerProtocol = TodoListManager.shared
+  
   var requestedTasks: [Item] = [] {
     didSet {
       undoneTasksTableView.reloadData()
@@ -75,8 +77,8 @@ class ListModeViewController: UIViewController, TodoListObserver, SignOutDelegat
   
   func setupTableView() {
     AuthManager.share.signOutDelegate = self
-    TodoListManager.shared.delegate = self
-    TodoListManager.shared.startObservingDatabase(for: .undoneTasks)
+    todoListManager.delegate = self
+    todoListManager.startObservingDatabase(for: .undoneTasks)
   }
   
   //MARK: - Function that create overlay buttons
@@ -183,7 +185,7 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
     let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
       // Delete todo
       let item = self.requestedTasks[indexPath.row]
-      TodoListManager.shared.deleteTodo(with: item.noteUid!, and: item.attachedImageUid ?? nil)
+      self.todoListManager.deleteTodo(with: item.noteUid!, and: item.attachedImageUid ?? nil)
     }
     action.backgroundColor = .flatRed
 
@@ -195,7 +197,7 @@ extension ListModeViewController: UITableViewDelegate, UIPopoverPresentationCont
       // Mark todo like done
       let noteRef = self.requestedTasks[indexPath.row].noteUid
       let data = [ "isDone": true ]
-      TodoListManager.shared.updateExistingTodo(with: data as [AnyHashable : Any], and: noteRef!)
+      self.todoListManager.updateExistingTodo(with: data as [AnyHashable : Any], and: noteRef!)
     }
     action.backgroundColor = .flatMint
     
